@@ -1,0 +1,34 @@
+name: Refresh Action data
+
+on:
+  schedule:
+    - cron: "0 5 * * *"   # elke dag 05:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Scrape Action products
+        run: python scrape.py
+
+      - name: Commit updated dataset
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain products.js products.json)" ]; then
+            git add products.js products.json
+            git commit -m "chore: refresh Action product data"
+            git push
+          else
+            echo "No changes in dataset."
+          fi

@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+home.html
+cat.html
+.DS_Store

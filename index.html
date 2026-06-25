@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#0a3d91" />
+<title>Action Price Panic 🛒</title>
+<style>
+  :root{
+    --action-blue:#0a3d91;
+    --action-blue-2:#072c6b;
+    --action-yellow:#ffd200;
+    --bg:#06122e;
+    --card:#0f1f47;
+    --card-2:#152a5e;
+    --good:#16c784;
+    --warn:#ffb020;
+    --bad:#ff4d4d;
+    --text:#eaf0ff;
+    --muted:#92a3cf;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 800px at 50% -10%, #15336e 0%, var(--bg) 55%);
+    color:var(--text);
+    overscroll-behavior:none;
+    user-select:none;
+  }
+  #app{
+    max-width:480px;margin:0 auto;min-height:100%;
+    display:flex;flex-direction:column;position:relative;
+  }
+  .screen{flex:1;display:none;flex-direction:column;padding:18px;animation:fade .25s ease;}
+  .screen.active{display:flex;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  /* ---- Header / brand ---- */
+  .brand{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 6px;}
+  .brand .logo{
+    background:var(--action-blue);color:#fff;font-weight:900;letter-spacing:.5px;
+    padding:6px 12px;border-radius:8px;font-size:20px;border:2px solid var(--action-yellow);
+  }
+  .brand .sub{font-size:13px;color:var(--muted);}
+
+  /* ---- Start screen ---- */
+  .hero{text-align:center;margin-top:8px;}
+  .hero h1{font-size:30px;margin:18px 0 6px;line-height:1.1;}
+  .hero h1 span{color:var(--action-yellow);}
+  .hero p{color:var(--muted);font-size:15px;margin:0 18px 22px;}
+  .modes{display:flex;flex-direction:column;gap:12px;margin-top:6px;}
+  .mode-btn{
+    background:linear-gradient(180deg,var(--card-2),var(--card));
+    border:1px solid #24407e;border-radius:var(--radius);
+    padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;
+    transition:transform .12s ease, border-color .12s;
+    text-align:left;
+  }
+  .mode-btn:active{transform:scale(.97);}
+  .mode-btn .emoji{font-size:30px;}
+  .mode-btn .t{font-weight:800;font-size:17px;}
+  .mode-btn .d{font-size:12.5px;color:var(--muted);margin-top:2px;}
+  .mode-btn.primary{border-color:var(--action-yellow);box-shadow:0 0 0 1px var(--action-yellow) inset;}
+
+  .stat-row{display:flex;gap:10px;margin-top:18px;}
+  .stat{flex:1;background:var(--card);border:1px solid #21376b;border-radius:14px;padding:10px;text-align:center;}
+  .stat .n{font-size:20px;font-weight:900;color:var(--action-yellow);}
+  .stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+
+  /* ---- Game screen ---- */
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .round-pill{background:var(--card);border:1px solid #21376b;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;}
+  .score-pill{font-size:13px;color:var(--muted);}
+  .score-pill b{color:var(--action-yellow);font-size:16px;}
+  .combo{font-size:12px;color:var(--good);font-weight:800;}
+
+  .timer-wrap{height:10px;background:#11214a;border-radius:999px;overflow:hidden;margin-bottom:14px;}
+  .timer-bar{height:100%;width:100%;background:linear-gradient(90deg,var(--good),var(--warn),var(--bad));
+    transform-origin:left;transition:transform .1s linear;}
+  .timer-bar.loading{background:#3a5aa0;animation:pulseBar 1s ease-in-out infinite;}
+  @keyframes pulseBar{0%,100%{opacity:.4;}50%{opacity:.9;}}
+  .product .img.loading{animation:imgPulse 1s ease-in-out infinite;}
+  @keyframes imgPulse{0%,100%{opacity:.45;}50%{opacity:.8;}}
+
+  .product{
+    background:linear-gradient(180deg,#fff,#eef2ff);color:#0a1838;border-radius:var(--radius);
+    padding:18px;text-align:center;position:relative;overflow:hidden;flex:0 0 auto;
+    box-shadow:0 12px 30px rgba(0,0,0,.35);
+  }
+  .product .cat{position:absolute;top:12px;left:12px;background:var(--action-blue);color:#fff;
+    font-size:11px;font-weight:800;padding:4px 8px;border-radius:6px;letter-spacing:.4px;}
+  .product .img{
+    width:170px;height:170px;margin:6px auto 8px;border-radius:16px;background:#fff;
+    object-fit:contain;display:block;box-shadow:0 4px 10px rgba(0,0,0,.12);
+  }
+  .product .name{font-size:18px;font-weight:800;margin:4px 8px 2px;line-height:1.2;}
+  .product .hint{font-size:12.5px;color:#5a6b96;margin-top:4px;min-height:16px;}
+  #p-meta{opacity:0;transform:translateY(4px);transition:opacity .3s ease,transform .3s ease;min-height:42px;}
+  #p-meta.ready{opacity:1;transform:none;}
+  .product .deal-flag{position:absolute;top:12px;right:12px;background:var(--bad);color:#fff;font-size:11px;font-weight:800;padding:4px 8px;border-radius:6px;}
+
+  .answer{margin-top:16px;text-align:center;}
+  .answer .display{
+    font-size:46px;font-weight:900;letter-spacing:1px;color:var(--text);
+    background:var(--card);border:1px solid #2a4684;border-radius:16px;padding:10px;min-height:70px;
+    display:flex;align-items:center;justify-content:center;gap:4px;
+  }
+  .answer .display .cur{color:var(--action-yellow);font-size:26px;align-self:flex-start;margin-top:8px;}
+  .answer .display.blink{animation:blink 1s steps(2) infinite;}
+  @keyframes blink{50%{opacity:.55;}}
+
+  .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+  .key{
+    background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid #2a4684;
+    border-radius:16px;font-size:26px;font-weight:800;padding:16px 0;cursor:pointer;color:var(--text);
+    transition:transform .08s, background .1s;
+  }
+  .key:active{transform:scale(.93);background:#1c3a78;}
+  .key.alt{font-size:18px;color:var(--muted);}
+  .submit{
+    grid-column:span 3;background:var(--action-yellow);color:#0a1838;font-weight:900;
+    border:none;border-radius:16px;padding:16px;font-size:20px;cursor:pointer;margin-top:2px;
+  }
+  .submit:active{transform:scale(.98);}
+
+  /* ---- Reveal overlay ---- */
+  .reveal{
+    position:absolute;inset:0;background:rgba(4,10,28,.92);backdrop-filter:blur(6px);
+    display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;z-index:5;
+    animation:fade .2s ease;
+  }
+  .reveal.show{display:flex;}
+  .reveal .verdict{font-size:40px;font-weight:900;text-align:center;margin-bottom:6px;}
+  .reveal .delta{font-size:15px;color:var(--muted);margin-bottom:18px;text-align:center;}
+  .reveal .prices{display:flex;gap:14px;margin-bottom:14px;}
+  .reveal .pbox{background:var(--card);border:1px solid #2a4684;border-radius:14px;padding:12px 18px;text-align:center;min-width:120px;}
+  .reveal .pbox .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+  .reveal .pbox .v{font-size:28px;font-weight:900;}
+  .reveal .pbox.actual .v{color:var(--action-yellow);}
+  .reveal .pts{font-size:22px;font-weight:900;color:var(--good);margin:8px 0 20px;}
+  .reveal .next{background:var(--action-yellow);color:#0a1838;font-weight:900;border:none;border-radius:14px;padding:14px 40px;font-size:18px;cursor:pointer;}
+
+  /* ---- Results ---- */
+  .results{text-align:center;}
+  .results .big{font-size:54px;font-weight:900;color:var(--action-yellow);margin:6px 0;}
+  .results .lbl{color:var(--muted);font-size:14px;}
+  .grid-emoji{font-size:24px;letter-spacing:4px;margin:18px 0;line-height:1.6;}
+  .results .rank{font-size:22px;font-weight:800;margin:4px 0 2px;}
+  .breakdown{background:var(--card);border:1px solid #21376b;border-radius:14px;margin:16px 0;overflow:hidden;}
+  .breakdown .row{display:flex;justify-content:space-between;padding:10px 14px;font-size:13px;border-top:1px solid #18305f;}
+  .breakdown .row:first-child{border-top:none;}
+  .breakdown .row .nm{display:flex;gap:8px;align-items:center;}
+  .breakdown .row .pt{font-weight:800;}
+  .btn-row{display:flex;gap:10px;}
+  .btn{flex:1;border:none;border-radius:14px;padding:15px;font-size:16px;font-weight:800;cursor:pointer;}
+  .btn.primary{background:var(--action-yellow);color:#0a1838;}
+  .btn.ghost{background:var(--card);color:var(--text);border:1px solid #2a4684;}
+
+  .toast{
+    position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);
+    background:#0c1a3d;border:1px solid var(--action-yellow);color:var(--text);
+    padding:12px 18px;border-radius:12px;font-size:14px;opacity:0;transition:.3s;z-index:50;pointer-events:none;max-width:90%;text-align:center;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .footer{text-align:center;color:var(--muted);font-size:11px;margin:14px 0 6px;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- START -->
+  <section id="screen-start" class="screen active">
+    <div class="brand"><span class="logo">Action</span><span class="sub">Price Panic</span></div>
+    <div class="hero">
+      <h1>Raad de prijs in <span>10 seconden</span> 🛒</h1>
+      <p>Hoe goed ken jij de Action? Gok de prijs, scoor punten, deel je resultaat.</p>
+    </div>
+    <div class="modes">
+      <div class="mode-btn primary" data-mode="daily">
+        <div class="emoji">📅</div>
+        <div><div class="t">Daily Deal Dash</div><div class="d">10 vaste items per dag — iedereen speelt dezelfde. Deel je score!</div></div>
+      </div>
+      <div class="mode-btn" data-mode="quick">
+        <div class="emoji">⚡</div>
+        <div><div class="t">Quick Play</div><div class="d">5 willekeurige items voor tussendoor.</div></div>
+      </div>
+      <div class="mode-btn" data-mode="sudden">
+        <div class="emoji">💀</div>
+        <div><div class="t">Sudden Death</div><div class="d">Blijf spelen tot je er meer dan €2 naast zit.</div></div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="n" id="stat-best">0</div><div class="l">Beste score</div></div>
+      <div class="stat"><div class="n" id="stat-streak">0</div><div class="l">Dag-streak</div></div>
+      <div class="stat"><div class="n" id="stat-played">0</div><div class="l">Gespeeld</div></div>
+    </div>
+    <div class="footer">Prototype · prijzen zijn voorbeeld­data</div>
+  </section>
+
+  <!-- GAME -->
+  <section id="screen-game" class="screen">
+    <div class="topbar">
+      <div class="round-pill" id="round-pill">Ronde 1/10</div>
+      <div class="combo" id="combo"></div>
+      <div class="score-pill">Score <b id="score-now">0</b></div>
+    </div>
+    <div class="timer-wrap"><div class="timer-bar" id="timer-bar"></div></div>
+
+    <div class="product">
+      <span class="cat" id="p-cat">SNACKS</span>
+      <span class="deal-flag" id="p-deal" style="display:none">DEAL</span>
+      <img class="img" id="p-img" alt="" />
+      <div id="p-meta">
+        <div class="name" id="p-name">Product</div>
+        <div class="hint" id="p-hint"></div>
+      </div>
+    </div>
+
+    <div class="answer">
+      <div class="display blink" id="display"><span class="cur">€</span><span id="disp-val">0,00</span></div>
+    </div>
+
+    <div class="keypad" id="keypad">
+      <div class="key" data-k="1">1</div>
+      <div class="key" data-k="2">2</div>
+      <div class="key" data-k="3">3</div>
+      <div class="key" data-k="4">4</div>
+      <div class="key" data-k="5">5</div>
+      <div class="key" data-k="6">6</div>
+      <div class="key" data-k="7">7</div>
+      <div class="key" data-k="8">8</div>
+      <div class="key" data-k="9">9</div>
+      <div class="key alt" data-k="del">⌫</div>
+      <div class="key" data-k="0">0</div>
+      <div class="key alt" data-k="clr">C</div>
+      <button class="submit" id="submit-btn">PRIJS! 💥</button>
+    </div>
+
+    <!-- reveal overlay -->
+    <div class="reveal" id="reveal">
+      <div class="verdict" id="r-verdict">Bijna!</div>
+      <div class="delta" id="r-delta"></div>
+      <div class="prices">
+        <div class="pbox"><div class="l">Jouw gok</div><div class="v" id="r-guess">€0,00</div></div>
+        <div class="pbox actual"><div class="l">Echte prijs</div><div class="v" id="r-actual">€0,00</div></div>
+      </div>
+      <div class="pts" id="r-pts">+0 punten</div>
+      <a id="r-link" href="#" target="_blank" rel="noopener" style="color:var(--muted);font-size:13px;text-decoration:underline;margin-bottom:14px;display:none">🔗 Bekijk bij Action</a>
+      <button class="next" id="next-btn">Volgende →</button>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="screen-results" class="screen">
+    <div class="results">
+      <div class="brand"><span class="logo">Action</span><span class="sub">Price Panic</span></div>
+      <div class="lbl" id="res-mode">Daily Deal Dash</div>
+      <div class="big" id="res-score">0</div>
+      <div class="rank" id="res-rank">🛒 Schappenvuller</div>
+      <div class="grid-emoji" id="res-grid"></div>
+      <div class="breakdown" id="res-breakdown"></div>
+      <div class="btn-row">
+        <button class="btn primary" id="share-btn">📋 Deel score</button>
+        <button class="btn ghost" id="again-btn">Opnieuw</button>
+      </div>
+      <div class="footer"><a href="#" id="home-link" style="color:var(--muted)">← Naar startscherm</a></div>
+    </div>
+  </section>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="products.js"></script>
+<script>
+/* ============ DATA (real Action products) ============ */
+const ITEMS = (window.PRODUCTS||[]).map(x=>({
+  n:x.n, c:x.c, p:x.p, h:[x.b,x.d].filter(Boolean).join(" · "),
+  img:x.img, u:x.u, o:x.o, deal:x.deal
+}));
+
+const RANKS = [
+  {min:0,    t:"🛒 Schappenvuller"},
+  {min:3000, t:"🏷️ Prijsbewust"},
+  {min:5000, t:"💶 Koopjesjager"},
+  {min:7000, t:"🧠 Action-kenner"},
+  {min:8800, t:"👑 Prijsorakel"},
+];
+
+/* ============ STATE ============ */
+const ROUND_TIME = 10;
+let state = null;
+
+const $ = id => document.getElementById(id);
+const fmt = n => "€"+n.toFixed(2).replace(".",",");
+
+/* simple seeded RNG for daily mode */
+function seedFromDate(){const d=new Date();return d.getFullYear()*1e4+(d.getMonth()+1)*100+d.getDate();}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function pickItems(n,rng){const idx=[...ITEMS.keys()];for(let i=idx.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}return idx.slice(0,n).map(i=>ITEMS[i]);}
+
+/* ============ STORAGE ============ */
+const store = {
+  get(){try{return JSON.parse(localStorage.getItem("app_stats")||"{}");}catch{return{};}},
+  set(o){localStorage.setItem("app_stats",JSON.stringify(o));}
+};
+function refreshStats(){
+  const s=store.get();
+  $("stat-best").textContent=s.best||0;
+  $("stat-streak").textContent=s.streak||0;
+  $("stat-played").textContent=s.played||0;
+}
+
+/* ============ SCREEN NAV ============ */
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active");}
+
+/* ============ GAME FLOW ============ */
+function startGame(mode){
+  let items, total;
+  if(mode==="daily"){items=pickItems(10,mulberry32(seedFromDate()));total=10;}
+  else if(mode==="quick"){items=pickItems(5,mulberry32(Math.random()*1e9|0));total=5;}
+  else {items=pickItems(ITEMS.length,mulberry32(Math.random()*1e9|0));total=ITEMS.length;}
+  state={mode,items,total,round:0,score:0,combo:0,maxCombo:0,results:[],input:"",timer:null,locked:false};
+  show("screen-game");
+  loadRound();
+}
+
+function loadRound(){
+  const it=state.items[state.round];
+  state.input="";state.locked=true;
+  $("round-pill").textContent = state.mode==="sudden" ? "Ronde "+(state.round+1) : "Ronde "+(state.round+1)+"/"+state.total;
+  $("score-now").textContent=state.score;
+  $("combo").textContent = state.combo>=2 ? "🔥 x"+comboMult(state.combo).toFixed(1) : "";
+  $("p-cat").textContent=it.c.toUpperCase();
+  // pre-fill meta but keep it hidden until the photo is ready
+  $("p-name").textContent=it.n;
+  $("p-hint").textContent=it.h||"";
+  $("p-meta").classList.remove("ready");
+  $("p-deal").style.display="none";
+  updateDisplay();
+  $("reveal").classList.remove("show");
+  // --- wait for image before starting the timer / showing the title ---
+  setLoading(true);
+  const img=$("p-img");
+  img.onload=null;img.onerror=null;
+  const beginRound=state.round;
+  let started=false;
+  const go=()=>{
+    if(started||state.round!==beginRound)return; started=true;
+    revealMeta(it);
+    setLoading(false);
+    startTimer();
+  };
+  img.onload=go;
+  img.onerror=go;
+  img.src=it.img; img.alt=it.n;
+  if(img.complete && img.naturalWidth>0){ go(); }            // cached
+  setTimeout(go, 4000);                                       // safety fallback
+  preloadAhead();
+}
+
+function revealMeta(it){
+  $("p-deal").style.display = it.deal ? "block":"none";
+  $("p-meta").classList.add("ready");
+}
+
+// Secretly warm up the next few product images so future rounds start instantly.
+function preloadAhead(){
+  for(let k=1;k<=3;k++){
+    const nxt=state.items[state.round+k];
+    if(nxt && !preloadAhead._seen.has(nxt.img)){
+      preloadAhead._seen.add(nxt.img);
+      const pi=new Image(); pi.src=nxt.img;
+    }
+  }
+}
+preloadAhead._seen=new Set();
+
+function setLoading(on){
+  state.locked=on;
+  $("p-img").classList.toggle("loading",on);
+  $("submit-btn").disabled=on;
+  $("submit-btn").style.opacity=on?.5:1;
+  const bar=$("timer-bar");
+  bar.style.transition="none";
+  bar.style.transform="scaleX(1)";
+  bar.classList.toggle("loading",on);
+  $("disp-val").textContent = on ? "laden…" : "0,00";
+  $("display").classList.toggle("blink",!on);
+}
+
+function comboMult(c){return c>=4?2:c>=3?1.5:c>=2?1.2:1;}
+
+function startTimer(){
+  const bar=$("timer-bar");bar.style.transition="none";bar.style.transform="scaleX(1)";
+  let start=performance.now();
+  void bar.offsetWidth;
+  clearInterval(state.timer);
+  state.timer=setInterval(()=>{
+    const el=(performance.now()-start)/1000;
+    const frac=Math.max(0,1-el/ROUND_TIME);
+    bar.style.transform="scaleX("+frac+")";
+    if(el>=ROUND_TIME){clearInterval(state.timer);submitGuess(true);}
+  },50);
+}
+
+function updateDisplay(){
+  let v=state.input;
+  let out;
+  if(v===""){out="0,00";}
+  else{
+    let cents=parseInt(v,10);
+    out=(cents/100).toFixed(2).replace(".",",");
+  }
+  $("disp-val").textContent=out;
+  $("display").classList.toggle("blink",v==="");
+}
+
+function pressKey(k){
+  if(state.locked)return;
+  if(k==="del")state.input=state.input.slice(0,-1);
+  else if(k==="clr")state.input="";
+  else if(/\d/.test(k)){if(state.input.length<6)state.input+=k;}
+  updateDisplay();
+}
+
+function currentGuess(){return state.input===""?0:parseInt(state.input,10)/100;}
+
+function submitGuess(timeout){
+  if(state.locked)return;
+  state.locked=true;
+  clearInterval(state.timer);
+  const it=state.items[state.round];
+  const guess=currentGuess();
+  const diff=Math.abs(guess-it.p);
+  const elapsed=(performance.now())%1; // not used; speed handled via bar
+  // points
+  let pts=0,verdict,vcolor;
+  const exact=diff<0.005;
+  if(timeout && state.input===""){pts=0;verdict="⏰ Te laat!";vcolor="var(--bad)";}
+  else{
+    let base=Math.max(0,1000-Math.round(diff*1000)); // -100 per €0.10
+    pts=base;
+    if(exact){pts+=500;}
+    // combo
+    const closeEnough=diff<=0.50;
+    if(closeEnough){state.combo++;}else{state.combo=0;}
+    state.maxCombo=Math.max(state.maxCombo,state.combo);
+    pts=Math.round(pts*comboMult(state.combo));
+    if(exact){verdict="🎯 PRECIES!";vcolor="var(--good)";}
+    else if(diff<=0.10){verdict="🔥 Heet!";vcolor="var(--good)";}
+    else if(diff<=0.50){verdict="😎 Dichtbij!";vcolor="var(--good)";}
+    else if(diff<=1.00){verdict="🙂 Redelijk";vcolor="var(--warn)";}
+    else if(diff<=2.00){verdict="😬 Mis";vcolor="var(--warn)";}
+    else{verdict="❌ Koud!";vcolor="var(--bad)";}
+  }
+  state.score+=pts;
+  state.results.push({it,guess,pts,diff,exact,timeout:timeout&&state.input===""});
+  // reveal
+  $("r-verdict").textContent=verdict;$("r-verdict").style.color=vcolor;
+  $("r-delta").textContent = (timeout&&state.input==="") ? "Geen gok ingevuld" :
+     (exact?"Helemaal goed!":(guess>it.p?"€"+ (guess-it.p).toFixed(2).replace('.',',') +" te duur":"€"+(it.p-guess).toFixed(2).replace('.',',')+" te goedkoop"));
+  $("r-guess").textContent=fmt(guess);
+  $("r-actual").textContent=fmt(it.p);
+  $("r-pts").textContent="+"+pts+" punten"+(state.combo>=2?"  🔥x"+comboMult(state.combo).toFixed(1):"");
+  const rl=$("r-link"); if(it.u){rl.href=it.u;rl.style.display="inline-block";}else{rl.style.display="none";}
+  $("score-now").textContent=state.score;
+  // sudden death end?
+  state._suddenOut = (state.mode==="sudden" && diff>2.00);
+  $("next-btn").textContent = lastRound()? "Resultaat →":"Volgende →";
+  $("reveal").classList.add("show");
+}
+
+function lastRound(){
+  if(state.mode==="sudden")return state._suddenOut;
+  return state.round>=state.total-1;
+}
+
+function nextRound(){
+  if(lastRound()){endGame();return;}
+  state.round++;
+  loadRound();
+}
+
+function endGame(){
+  // stats
+  const s=store.get();
+  s.played=(s.played||0)+1;
+  if(!s.best||state.score>s.best)s.best=state.score;
+  if(state.mode==="daily"){
+    const today=seedFromDate();
+    if(s.lastDaily!==today){
+      s.streak = (s.lastDaily===today-1)? (s.streak||0)+1 : 1;
+      s.lastDaily=today;
+      s.dailyScore=state.score;
+    }
+  }
+  store.set(s);
+  // results screen
+  const modeName={daily:"Daily Deal Dash",quick:"Quick Play",sudden:"Sudden Death"}[state.mode];
+  $("res-mode").textContent=modeName + (state.mode==="sudden"?" · "+state.results.length+" rondes overleefd":"");
+  $("res-score").textContent=state.score;
+  const rank=[...RANKS].reverse().find(r=>state.score>=r.min)||RANKS[0];
+  $("res-rank").textContent=rank.t;
+  // emoji grid
+  $("res-grid").textContent=state.results.map(r=>{
+    if(r.timeout)return "⬛";
+    if(r.exact)return "🟨";
+    if(r.diff<=0.10)return "🟩";
+    if(r.diff<=0.50)return "🟩";
+    if(r.diff<=1.00)return "🟧";
+    return "🟥";
+  }).join("");
+  // breakdown
+  $("res-breakdown").innerHTML=state.results.map(r=>
+    `<div class="row"><div class="nm"><img src="${r.it.img}" style="width:26px;height:26px;border-radius:5px;background:#fff;object-fit:contain"/> ${r.it.n}</div><div class="pt">+${r.pts}</div></div>`
+  ).join("");
+  show("screen-results");
+}
+
+/* ============ SHARE ============ */
+function shareText(){
+  const grid=state.results.map(r=>{
+    if(r.timeout)return "⬛";
+    if(r.exact)return "🟨";
+    if(r.diff<=0.50)return "🟩";
+    if(r.diff<=1.00)return "🟧";
+    return "🟥";
+  }).join("");
+  const day = state.mode==="daily" ? " #"+seedFromDate() : "";
+  return `Action Price Panic 🛒${day}\nScore: ${state.score}\n${grid}\nSpeel mee!`;
+}
+function doShare(){
+  const txt=shareText();
+  if(navigator.share){navigator.share({text:txt}).catch(()=>{});}
+  else{navigator.clipboard?.writeText(txt).then(()=>toast("Score gekopieerd! 📋"),()=>toast(txt));}
+}
+
+/* ============ TOAST ============ */
+let toastT;
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2200);}
+
+/* ============ EVENTS ============ */
+document.querySelectorAll(".mode-btn").forEach(b=>b.addEventListener("click",()=>startGame(b.dataset.mode)));
+$("keypad").addEventListener("click",e=>{const k=e.target.closest(".key");if(k)pressKey(k.dataset.k);});
+$("submit-btn").addEventListener("click",()=>submitGuess(false));
+$("next-btn").addEventListener("click",nextRound);
+$("share-btn").addEventListener("click",doShare);
+$("again-btn").addEventListener("click",()=>startGame(state.mode));
+$("home-link").addEventListener("click",e=>{e.preventDefault();refreshStats();show("screen-start");});
+document.addEventListener("keydown",e=>{
+  if(!$("screen-game").classList.contains("active"))return;
+  if(e.key>="0"&&e.key<="9")pressKey(e.key);
+  else if(e.key==="Backspace")pressKey("del");
+  else if(e.key==="Enter"){ $("reveal").classList.contains("show")?nextRound():submitGuess(false);}
+});
+
+refreshStats();
+</script>
+</body>
+</html>
