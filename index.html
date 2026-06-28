@@ -220,6 +220,43 @@
   #install-btn.show{display:flex;}
   #install-btn:active{transform:scale(.98);}
 
+  /* ---- Settings: sound toggle, difficulty, categories, records ---- */
+  .top-actions{position:absolute;top:calc(env(safe-area-inset-top) + 8px);right:10px;display:flex;gap:8px;z-index:6;}
+  .icon-btn{background:var(--card);border:1px solid #24407e;color:var(--text);width:38px;height:38px;border-radius:11px;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .icon-btn:active{transform:scale(.94);}
+
+  .seg{display:flex;gap:6px;background:var(--card);border:1px solid #21376b;border-radius:14px;padding:5px;margin-top:14px;}
+  .seg button{flex:1;background:transparent;border:none;color:var(--muted);font-weight:800;font-size:12.5px;padding:9px 4px;border-radius:10px;cursor:pointer;transition:.12s;}
+  .seg button.on{background:var(--action-yellow);color:#0a1838;}
+  .field-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:16px 2px 6px;font-weight:800;}
+
+  .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+  .chips::-webkit-scrollbar{display:none;}
+  .chip{flex:0 0 auto;background:var(--card);border:1px solid #24407e;color:var(--text);font-size:12.5px;font-weight:700;
+    padding:8px 13px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:.12s;}
+  .chip.on{background:var(--action-blue);border-color:var(--action-yellow);color:#fff;}
+
+  .records{background:var(--card);border:1px solid #21376b;border-radius:14px;margin-top:16px;overflow:hidden;}
+  .records summary{list-style:none;cursor:pointer;padding:12px 14px;font-weight:800;font-size:14px;display:flex;justify-content:space-between;align-items:center;}
+  .records summary::-webkit-details-marker{display:none;}
+  .records .rr{display:flex;justify-content:space-between;padding:9px 14px;font-size:13px;border-top:1px solid #18305f;}
+  .records .rr .v{font-weight:900;color:var(--action-yellow);}
+
+  /* ---- Ruilbon (mulligan) ---- */
+  #bon-btn{background:#fff;color:var(--action-blue);border:2px dashed var(--action-blue);border-radius:10px;
+    font-size:12px;font-weight:900;padding:6px 10px;cursor:pointer;display:none;align-items:center;gap:4px;line-height:1;}
+  #bon-btn.show{display:inline-flex;}
+  #bon-btn:active{transform:scale(.95);}
+  #bon-btn:disabled{opacity:.4;}
+
+  /* ---- Challenge banner ---- */
+  .challenge-banner{background:linear-gradient(90deg,var(--action-blue),var(--action-blue-2));
+    border:1px solid var(--action-yellow);border-radius:14px;padding:11px 14px;margin-top:14px;
+    font-size:13.5px;display:none;align-items:center;gap:10px;}
+  .challenge-banner.show{display:flex;}
+  .challenge-banner .em{font-size:22px;}
+  .challenge-banner b{color:var(--action-yellow);}
+
   /* ---- Prep / loading overlay ---- */
   #prep{position:absolute;inset:0;background:rgba(4,10,28,.82);backdrop-filter:blur(4px);
     display:none;align-items:center;justify-content:center;z-index:40;}
@@ -234,11 +271,20 @@
 
   <!-- START -->
   <section id="screen-start" class="screen active">
+    <div class="top-actions">
+      <button class="icon-btn" id="sound-btn" title="Geluid aan/uit">🔊</button>
+    </div>
     <div class="brand"><span class="logo">Action</span><span class="sub">Price Panic</span></div>
     <div class="hero">
       <h1>Raad de prijs in <span>10 seconden</span> 🛒</h1>
       <p>Hoe goed ken jij de Action? Gok de prijs, scoor punten, deel je resultaat.</p>
     </div>
+
+    <div class="challenge-banner" id="challenge-banner">
+      <span class="em">🎯</span>
+      <div>Je bent <b>uitgedaagd</b>! Speel exact dezelfde items en versla <b id="cb-score">?</b> punten.</div>
+    </div>
+
     <div class="modes">
       <div class="mode-btn primary" data-mode="daily">
         <div class="emoji">📅</div>
@@ -257,11 +303,29 @@
         <div><div class="t">Hoger of Lager</div><div class="d">Twee producten — tik op de duurste. 8 snelle duels.</div></div>
       </div>
     </div>
+
+    <div class="field-lbl">Moeilijkheid</div>
+    <div class="seg" id="diff-seg">
+      <button data-diff="easy">Makkelijk</button>
+      <button data-diff="normal" class="on">Normaal</button>
+      <button data-diff="hard">Pittig</button>
+      <button data-diff="mystery">Mystery</button>
+    </div>
+
+    <div class="field-lbl">Categorie</div>
+    <div class="chips" id="cat-chips"></div>
+
     <div class="stat-row">
       <div class="stat"><div class="n" id="stat-best">0</div><div class="l">Beste score</div></div>
       <div class="stat"><div class="n" id="stat-streak">0</div><div class="l">Dag-streak</div></div>
       <div class="stat"><div class="n" id="stat-played">0</div><div class="l">Gespeeld</div></div>
     </div>
+
+    <details class="records" id="records">
+      <summary>🏆 Records <span style="color:var(--muted);font-weight:600">bekijk ▾</span></summary>
+      <div id="records-body"></div>
+    </details>
+
     <button id="install-btn">📲 Installeer als app</button>
     <div class="footer">Live Action-data · fanproject, niet geaffilieerd met Action</div>
   </section>
@@ -270,6 +334,7 @@
   <section id="screen-game" class="screen">
     <div class="topbar">
       <div class="round-pill" id="round-pill">Ronde 1/10</div>
+      <button id="bon-btn" title="Ruil dit item in">🧾 Ruilbon <span id="bon-n">1</span></button>
       <div class="combo" id="combo"></div>
       <div class="score-pill">Score <b id="score-now">0</b></div>
     </div>
@@ -359,8 +424,10 @@
       <div class="lbl" id="res-mode">Daily Deal Dash</div>
       <div class="big" id="res-score">0</div>
       <div class="rank" id="res-rank">🛒 Schappenvuller</div>
+      <div id="res-challenge" style="display:none;font-weight:800;margin:6px 0;color:var(--action-yellow)"></div>
       <div class="grid-emoji" id="res-grid"></div>
       <div class="breakdown" id="res-breakdown"></div>
+      <button class="btn primary" id="challenge-btn" style="width:100%;margin-bottom:10px">🎯 Daag een vriend uit</button>
       <div class="btn-row">
         <button class="btn primary" id="share-btn">📋 Deel score</button>
         <button class="btn ghost" id="again-btn">Opnieuw</button>
@@ -427,7 +494,53 @@ function showPrep(on){ $("prep").classList.toggle("show", on); }
 /* simple seeded RNG for daily mode */
 function seedFromDate(){const d=new Date();return d.getFullYear()*1e4+(d.getMonth()+1)*100+d.getDate();}
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
-function pickItems(n,rng){const idx=[...ITEMS.keys()];for(let i=idx.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}return idx.slice(0,n).map(i=>ITEMS[i]);}
+function pickItems(n,rng,pool){const src=pool||activePool();const idx=[...src.keys()];for(let i=idx.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}return idx.slice(0,n).map(i=>src[i]);}
+
+/* ============ SETTINGS (sound, difficulty, category) ============ */
+let settings = loadSettings();
+function loadSettings(){
+  let s={}; try{s=JSON.parse(localStorage.getItem("app_settings")||"{}");}catch{}
+  return {sound: s.sound!==false, difficulty: s.difficulty||"normal", category: s.category||null};
+}
+function saveSettings(){localStorage.setItem("app_settings",JSON.stringify(settings));}
+const myst = ()=>settings.difficulty==="mystery";
+
+// pool filtered by difficulty + category; falls back gracefully when a combo is too small
+function activePool(){
+  let base = ITEMS;
+  if(settings.category) base = base.filter(x=>x.c===settings.category);
+  if(base.length<4) base = ITEMS;
+  let f = base;
+  const d=settings.difficulty;
+  if(d==="easy") f = base.filter(x=>x.p<3);
+  else if(d==="hard") f = base.filter(x=>x.p>=5);
+  return f.length>=6 ? f : base;
+}
+
+/* ============ SOUND + HAPTICS ============ */
+let audioCtx=null;
+function ac(){
+  if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch{}}
+  if(audioCtx&&audioCtx.state==="suspended")audioCtx.resume();
+  return audioCtx;
+}
+function beep(freq,dur=0.08,type="square",vol=0.15,when=0){
+  if(!settings.sound)return; const c=ac(); if(!c)return;
+  const t=c.currentTime+when, o=c.createOscillator(), g=c.createGain();
+  o.type=type; o.frequency.value=freq;
+  g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(vol,t+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g).connect(c.destination); o.start(t); o.stop(t+dur+0.03);
+}
+const sfx={
+  click(){beep(430,0.04,"square",0.07);},
+  tick(){beep(320,0.06,"sine",0.13);},
+  good(){beep(660,0.09,"triangle",0.16);beep(880,0.09,"triangle",0.16,0.085);},
+  great(){[523,659,784,1047].forEach((f,i)=>beep(f,0.11,"triangle",0.18,i*0.08));},
+  bad(){beep(165,0.24,"sawtooth",0.15);},
+  swap(){beep(720,0.06,"square",0.12);beep(540,0.09,"square",0.12,0.06);},
+};
+function haptic(p){ if(settings.sound && navigator.vibrate){try{navigator.vibrate(p);}catch{}} }
 
 /* ============ STORAGE ============ */
 const store = {
@@ -439,18 +552,39 @@ function refreshStats(){
   $("stat-best").textContent=s.best||0;
   $("stat-streak").textContent=s.streak||0;
   $("stat-played").textContent=s.played||0;
+  renderRecords(s);
+}
+const MODE_NAMES={daily:"Daily Deal Dash",quick:"Quick Play",sudden:"Sudden Death",duel:"Hoger of Lager"};
+function renderRecords(s){
+  s=s||store.get();
+  const bm=s.bestByMode||{};
+  $("records-body").innerHTML=Object.keys(MODE_NAMES).map(k=>
+    `<div class="rr"><span>${MODE_NAMES[k]}</span><span class="v">${bm[k]||0}</span></div>`).join("");
+}
+// record a finished game's score into stats (mutates+returns store object; caller persists)
+function recordScore(mode,score){
+  const s=store.get();
+  s.played=(s.played||0)+1;
+  if(!s.best||score>s.best)s.best=score;
+  s.bestByMode=s.bestByMode||{};
+  if(!s.bestByMode[mode]||score>s.bestByMode[mode])s.bestByMode[mode]=score;
+  return s;
 }
 
 /* ============ SCREEN NAV ============ */
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active");}
 
 /* ============ GAME FLOW ============ */
-function startGame(mode){
-  let items, total;
-  if(mode==="daily"){items=pickItems(10,mulberry32(seedFromDate()));total=10;}
-  else if(mode==="quick"){items=pickItems(5,mulberry32(Math.random()*1e9|0));total=5;}
-  else {items=pickItems(ITEMS.length,mulberry32(Math.random()*1e9|0));total=ITEMS.length;}
-  state={mode,items,total,round:0,score:0,combo:0,maxCombo:0,results:[],input:"",timer:null,locked:false};
+function startGame(mode, opts={}){
+  const pool=activePool();
+  let total, seed;
+  if(mode==="daily"){ total=Math.min(10,pool.length); seed = opts.seed ?? seedFromDate(); }
+  else if(mode==="quick"){ total=Math.min(5,pool.length); seed = opts.seed ?? (Math.random()*1e9|0); }
+  else { total=pool.length; seed = opts.seed ?? (Math.random()*1e9|0); } // sudden
+  const items=pickItems(total,mulberry32(seed),pool);
+  state={mode,items,total,seed,round:0,score:0,combo:0,maxCombo:0,results:[],input:"",timer:null,locked:false,
+         bons: mode==="sudden"?0:1, used:new Set(items), challengeTarget: (opts.target ?? null)};
+  hideBanner();
   show("screen-game");
   loadRound();
 }
@@ -468,10 +602,12 @@ async function loadRound(){
   $("score-now").textContent=state.score;
   $("combo").textContent = state.combo>=2 ? "🔥 x"+comboMult(state.combo).toFixed(1) : "";
   $("p-cat").textContent=it.c.toUpperCase();
+  $("p-cat").style.display = myst() ? "none" : "block";
   $("p-name").textContent=it.n;
-  $("p-hint").textContent=it.h||"";
+  $("p-hint").textContent = myst() ? "" : (it.h||"");
   $("p-meta").classList.remove("ready");
   $("p-deal").style.display="none";
+  updateBonBtn();
   updateDisplay();
   $("reveal").classList.remove("show");
   const img=$("p-img");
@@ -480,12 +616,36 @@ async function loadRound(){
   setLoading(false);
   revealMeta(it);
   startTimer();
+  updateBonBtn();
   preloadAhead();
 }
 
 function revealMeta(it){
-  $("p-deal").style.display = it.deal ? "block":"none";
+  $("p-deal").style.display = (!myst() && it.deal) ? "block":"none";
   $("p-meta").classList.add("ready");
+}
+
+/* ---- Ruilbon (mulligan): swap current item once per game ---- */
+function updateBonBtn(){
+  const b=$("bon-btn"), guessMode = state && state.mode!=="duel";
+  if(!guessMode){ b.classList.remove("show"); return; }
+  $("bon-n").textContent=state.bons;
+  b.classList.toggle("show", state.bons>0);
+  b.disabled = state.locked || state.bons<=0;
+}
+function useBon(){
+  if(!state || state.mode==="duel") return;
+  if(state.bons<=0 || state.locked) return;
+  if($("reveal").classList.contains("show")) return;
+  // find a replacement not already used
+  const pool=activePool().filter(x=>!state.used.has(x));
+  if(!pool.length){ toast("Geen ruil-item meer 🤷"); return; }
+  const repl=pool[Math.floor(Math.random()*pool.length)];
+  state.bons--; clearInterval(state.timer);
+  state.items[state.round]=repl; state.used.add(repl);
+  sfx.swap(); haptic(12);
+  toast("Ingeruild met de bon! 🧾");
+  loadRound();
 }
 
 // Warm up upcoming product images through the shared cache.
@@ -514,12 +674,15 @@ function comboMult(c){return c>=4?2:c>=3?1.5:c>=2?1.2:1;}
 function startTimer(){
   const bar=$("timer-bar");bar.style.transition="none";bar.style.transform="scaleX(1)";
   let start=performance.now();
+  state._lastTick=99;
   void bar.offsetWidth;
   clearInterval(state.timer);
   state.timer=setInterval(()=>{
     const el=(performance.now()-start)/1000;
     const frac=Math.max(0,1-el/ROUND_TIME);
     bar.style.transform="scaleX("+frac+")";
+    const sec=Math.ceil(ROUND_TIME-el);
+    if(sec<=3 && sec>=1 && sec!==state._lastTick){ state._lastTick=sec; sfx.tick(); haptic(7); }
     if(el>=ROUND_TIME){clearInterval(state.timer);submitGuess(true);}
   },50);
 }
@@ -541,6 +704,7 @@ function pressKey(k){
   if(k==="del")state.input=state.input.slice(0,-1);
   else if(k==="clr")state.input="";
   else if(/\d/.test(k)){if(state.input.length<6)state.input+=k;}
+  sfx.click(); haptic(6);
   updateDisplay();
 }
 
@@ -575,6 +739,12 @@ function submitGuess(timeout){
     else{verdict="❌ Koud!";vcolor="var(--bad)";}
   }
   state.score+=pts;
+  // sound + haptics
+  const noGuess = timeout && state.input==="";
+  if(noGuess){ sfx.bad(); haptic(45); }
+  else if(exact){ sfx.great(); haptic([15,40,15,40]); }
+  else if(diff<=0.50){ sfx.good(); haptic(20); }
+  else { sfx.bad(); haptic(35); }
   state.results.push({it,guess,pts,diff,exact,timeout:timeout&&state.input===""});
   // reveal
   $("r-verdict").textContent=verdict;$("r-verdict").style.color=vcolor;
@@ -588,6 +758,7 @@ function submitGuess(timeout){
   // sudden death end?
   state._suddenOut = (state.mode==="sudden" && diff>2.00);
   $("next-btn").textContent = lastRound()? "Resultaat →":"Volgende →";
+  updateBonBtn();
   $("reveal").classList.add("show");
 }
 
@@ -604,9 +775,7 @@ function nextRound(){
 
 function endGame(){
   // stats
-  const s=store.get();
-  s.played=(s.played||0)+1;
-  if(!s.best||state.score>s.best)s.best=state.score;
+  const s=recordScore(state.mode,state.score);
   if(state.mode==="daily"){
     const today=seedFromDate();
     if(s.lastDaily!==today){
@@ -617,11 +786,12 @@ function endGame(){
   }
   store.set(s);
   // results screen
-  const modeName={daily:"Daily Deal Dash",quick:"Quick Play",sudden:"Sudden Death"}[state.mode];
+  const modeName=MODE_NAMES[state.mode]||"Spel";
   $("res-mode").textContent=modeName + (state.mode==="sudden"?" · "+state.results.length+" rondes overleefd":"");
   $("res-score").textContent=state.score;
   const rank=[...RANKS].reverse().find(r=>state.score>=r.min)||RANKS[0];
   $("res-rank").textContent=rank.t;
+  showChallengeOutcome();
   // emoji grid
   $("res-grid").textContent=state.results.map(r=>{
     if(r.timeout)return "⬛";
@@ -641,16 +811,19 @@ function endGame(){
 /* ============ DUEL: Hoger of Lager ============ */
 const DUEL_ROUNDS=8;
 
-function startDuel(){
-  const pairs=buildPairs(DUEL_ROUNDS);
-  state={mode:"duel",pairs,total:pairs.length,round:0,score:0,combo:0,maxCombo:0,
-         results:[],locked:false,timer:null,qStart:0};
+function startDuel(opts={}){
+  const seed = opts.seed ?? (Math.random()*1e9|0);
+  const pairs=buildPairs(DUEL_ROUNDS, mulberry32(seed));
+  state={mode:"duel",pairs,total:pairs.length,seed,round:0,score:0,combo:0,maxCombo:0,
+         results:[],locked:false,timer:null,qStart:0,challengeTarget:(opts.target??null)};
+  hideBanner();
   show("screen-duel");
   loadDuel();
 }
 
-function buildPairs(n){
-  const pool=pickItems(ITEMS.length, mulberry32(Math.random()*1e9|0));
+function buildPairs(n,rng){
+  const P=activePool();
+  const pool=pickItems(P.length, rng, P);
   const pairs=[]; let i=0;
   while(pairs.length<n && i<pool.length-1){
     const a=pool[i]; let j=i+1, made=false;
@@ -658,7 +831,7 @@ function buildPairs(n){
       const b=pool[j];
       const hi=Math.max(a.p,b.p), gap=Math.abs(a.p-b.p);
       if(gap>=0.50 && gap>=hi*0.12){ // meaningful, fair gap
-        pairs.push(Math.random()<0.5?[a,b]:[b,a]);
+        pairs.push(rng()<0.5?[a,b]:[b,a]);
         pool.splice(j,1); made=true; break;
       }
     }
@@ -694,6 +867,7 @@ function renderDuel(a,b){
   [["0",a],["1",b]].forEach(([s,it])=>{
     $("dcard-"+s).className="duel-card";
     $("d"+s+"-cat").textContent=it.c.toUpperCase();
+    $("d"+s+"-cat").style.display = myst() ? "none" : "block";
     $("d"+s+"-name").textContent=it.n;
     const pr=$("d"+s+"-price"); pr.textContent=fmt(it.p); pr.classList.remove("show");
     const img=$("d"+s+"-img"); img.classList.remove("loading"); img.alt=it.n; img.src=it.img;
@@ -729,6 +903,7 @@ function chooseDuel(side){
     pts=Math.round((600+speed)*comboMult(state.combo));
   } else { state.combo=0; }
   state.score+=pts;
+  if(right){ sfx.good(); haptic(20); } else { sfx.bad(); haptic(40); }
   state.results.push({a,b,correctSide,picked:side,right,pts});
   // reveal prices + highlight
   ["0","1"].forEach(s=>{$("d"+s+"-price").classList.add("show");$("dcard-"+s).classList.add("disabled");});
@@ -750,15 +925,14 @@ function nextDuel(){
 }
 
 function endDuel(){
-  const s=store.get();
-  s.played=(s.played||0)+1;
-  if(!s.best||state.score>s.best)s.best=state.score;
+  const s=recordScore("duel",state.score);
   store.set(s);
   const correct=state.results.filter(r=>r.right).length;
   $("res-mode").textContent="Hoger of Lager · "+correct+"/"+state.total+" goed";
   $("res-score").textContent=state.score;
   const rank=[...RANKS].reverse().find(r=>state.score>=r.min)||RANKS[0];
   $("res-rank").textContent=rank.t;
+  showChallengeOutcome();
   $("res-grid").textContent=state.results.map(r=>r.right?"🟩":(r.picked<0?"⬛":"🟥")).join("");
   $("res-breakdown").innerHTML=state.results.map(r=>{
     const win=r.correctSide===0?r.a:r.b;
@@ -788,15 +962,93 @@ function doShare(){
   else{navigator.clipboard?.writeText(txt).then(()=>toast("Score gekopieerd! 📋"),()=>toast(txt));}
 }
 
+/* ============ FRIEND CHALLENGE ============ */
+function challengeURL(){
+  const p=new URLSearchParams();
+  p.set("c", state.seed);
+  p.set("m", state.mode);
+  p.set("s", state.score);
+  if(settings.difficulty!=="normal") p.set("d", settings.difficulty);
+  if(settings.category) p.set("cat", settings.category);
+  return location.origin+location.pathname+"?"+p.toString();
+}
+function doChallenge(){
+  const url=challengeURL();
+  const txt=`Ik scoorde ${state.score} bij Prijspaniek 🛒 — kun jij me verslaan? Zelfde items:\n${url}`;
+  if(navigator.share){navigator.share({text:txt,url}).catch(()=>{});}
+  else{navigator.clipboard?.writeText(txt).then(()=>toast("Uitdaging gekopieerd! 🎯 Stuur 'm door."),()=>toast(txt));}
+}
+function showChallengeOutcome(){
+  const cb=$("res-challenge"); if(!cb) return;
+  if(state.challengeTarget==null){ cb.style.display="none"; return; }
+  const t=state.challengeTarget, won=state.score>t, tie=state.score===t;
+  cb.style.display="block";
+  cb.textContent = tie ? `🤝 Gelijkspel! Allebei ${t}.`
+    : won ? `🏆 Gewonnen! Jij ${state.score} vs ${t}.`
+          : `😤 Verloren — jij ${state.score}, uitdager ${t}. Revanche?`;
+}
+let pendingChallenge=null;
+function hideBanner(){ $("challenge-banner").classList.remove("show"); }
+function startChallenge(ch){
+  if(!ch) return;
+  if(ch.mode==="duel") startDuel({seed:ch.seed,target:ch.target});
+  else startGame(ch.mode==="sudden"?"quick":ch.mode, {seed:ch.seed,target:ch.target});
+}
+function parseChallenge(){
+  const q=new URLSearchParams(location.search);
+  if(!q.has("c")) return;
+  const seed=parseInt(q.get("c"),10);
+  if(!Number.isFinite(seed)) return;
+  if(q.get("d")) setDifficulty(q.get("d"));
+  if(q.get("cat")) setCategory(decodeURIComponent(q.get("cat")));
+  pendingChallenge={seed, mode:q.get("m")||"quick", target:parseInt(q.get("s")||"0",10)};
+  $("cb-score").textContent=pendingChallenge.target;
+  $("challenge-banner").classList.add("show");
+}
+
+/* ============ SETTINGS UI ============ */
+function setSound(on){
+  settings.sound=on; saveSettings();
+  $("sound-btn").textContent = on ? "🔊" : "🔇";
+  if(on){ sfx.click(); }
+}
+function setDifficulty(d){
+  if(!["easy","normal","hard","mystery"].includes(d)) return;
+  settings.difficulty=d; saveSettings();
+  document.querySelectorAll("#diff-seg button").forEach(b=>b.classList.toggle("on",b.dataset.diff===d));
+}
+function setCategory(c){
+  settings.category=c||null; saveSettings();
+  document.querySelectorAll("#cat-chips .chip").forEach(ch=>ch.classList.toggle("on",(ch.dataset.cat||"")===(settings.category||"")));
+}
+function buildCatChips(){
+  const cats=[...new Set(ITEMS.map(x=>x.c))].sort((a,b)=>a.localeCompare(b,"nl"));
+  const wrap=$("cat-chips");
+  wrap.innerHTML = `<button class="chip" data-cat="">Alle</button>` +
+    cats.map(c=>`<button class="chip" data-cat="${c}">${c}</button>`).join("");
+  wrap.querySelectorAll(".chip").forEach(ch=>ch.addEventListener("click",()=>{ setCategory(ch.dataset.cat); sfx.click(); }));
+}
+function applySettingsUI(){
+  $("sound-btn").textContent = settings.sound ? "🔊" : "🔇";
+  setDifficulty(settings.difficulty);
+  setCategory(settings.category);
+}
+
 /* ============ TOAST ============ */
 let toastT;
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2200);}
 
 /* ============ EVENTS ============ */
 document.querySelectorAll(".mode-btn").forEach(b=>b.addEventListener("click",()=>{
+  ac(); // unlock audio on first gesture
   const m=b.dataset.mode;
   if(m==="duel")startDuel(); else startGame(m);
 }));
+$("sound-btn").addEventListener("click",()=>{ ac(); setSound(!settings.sound); });
+document.querySelectorAll("#diff-seg button").forEach(b=>b.addEventListener("click",()=>{ setDifficulty(b.dataset.diff); sfx.click(); }));
+$("bon-btn").addEventListener("click",useBon);
+$("challenge-btn").addEventListener("click",doChallenge);
+$("challenge-banner").addEventListener("click",()=>{ ac(); startChallenge(pendingChallenge); });
 $("keypad").addEventListener("click",e=>{const k=e.target.closest(".key");if(k)pressKey(k.dataset.k);});
 $("submit-btn").addEventListener("click",()=>submitGuess(false));
 $("next-btn").addEventListener("click",nextRound);
@@ -816,10 +1068,14 @@ document.addEventListener("keydown",e=>{
   if(!$("screen-game").classList.contains("active"))return;
   if(e.key>="0"&&e.key<="9")pressKey(e.key);
   else if(e.key==="Backspace")pressKey("del");
+  else if(e.key==="r"||e.key==="R"){ if(!$("reveal").classList.contains("show"))useBon(); }
   else if(e.key==="Enter"){ $("reveal").classList.contains("show")?nextRound():submitGuess(false);}
 });
 
 refreshStats();
+buildCatChips();
+applySettingsUI();
+parseChallenge();
 
 /* ============ PWA: install prompt + service worker ============ */
 let deferredPrompt=null;
