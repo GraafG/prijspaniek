@@ -195,6 +195,14 @@
   }
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
   .footer{text-align:center;color:var(--muted);font-size:11px;margin:14px 0 6px;}
+
+  /* ---- Prep / loading overlay ---- */
+  #prep{position:absolute;inset:0;background:rgba(4,10,28,.82);backdrop-filter:blur(4px);
+    display:none;align-items:center;justify-content:center;z-index:40;}
+  #prep.show{display:flex;}
+  .prep-box{display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--muted);font-size:14px;font-weight:600;}
+  .spinner{width:44px;height:44px;border-radius:50%;border:4px solid #25406f;border-top-color:var(--action-yellow);animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
 </style>
 </head>
 <body>
@@ -336,6 +344,9 @@
     </div>
   </section>
 
+  <!-- prep / image-loading overlay -->
+  <div id="prep"><div class="prep-box"><div class="spinner"></div><div>Foto's laden…</div></div></div>
+
 </div>
 <div class="toast" id="toast"></div>
 
@@ -361,6 +372,32 @@ let state = null;
 
 const $ = id => document.getElementById(id);
 const fmt = n => "€"+n.toFixed(2).replace(".",",");
+
+/* ============ IMAGE PRELOAD CACHE ============ */
+// Each url resolves only when the image is fully downloaded AND decoded by the browser.
+const imgCache = new Map();
+function preloadImg(url){
+  if(!url) return Promise.resolve();
+  if(imgCache.has(url)) return imgCache.get(url);
+  const p = new Promise(resolve=>{
+    const im = new Image();
+    im.decoding = "async";
+    const done = ()=>resolve(url);
+    im.onload = ()=>{ (im.decode ? im.decode().then(done, done) : done()); };
+    im.onerror = ()=>{ imgCache.delete(url); resolve(url); }; // don't cache failures
+    im.src = url;
+  });
+  imgCache.set(url, p);
+  return p;
+}
+// Wait until every given image is ready. Hard cap so a dead CDN can never freeze the game.
+function waitForImages(urls, capMs=15000){
+  const ps = urls.map(preloadImg);
+  const all = Promise.all(ps);
+  if(!capMs) return all;
+  return Promise.race([all, new Promise(r=>setTimeout(r, capMs))]);
+}
+function showPrep(on){ $("prep").classList.toggle("show", on); }
 
 /* simple seeded RNG for daily mode */
 function seedFromDate(){const d=new Date();return d.getFullYear()*1e4+(d.getMonth()+1)*100+d.getDate();}
@@ -393,37 +430,31 @@ function startGame(mode){
   loadRound();
 }
 
-function loadRound(){
+async function loadRound(){
+  const beginRound=state.round;
   const it=state.items[state.round];
   state.input="";state.locked=true;
+  // make sure the photo is fully ready BEFORE we render this round
+  showPrep(true);
+  await waitForImages([it.img]);
+  if(state.round!==beginRound) return;   // user navigated away meanwhile
+  showPrep(false);
   $("round-pill").textContent = state.mode==="sudden" ? "Ronde "+(state.round+1) : "Ronde "+(state.round+1)+"/"+state.total;
   $("score-now").textContent=state.score;
   $("combo").textContent = state.combo>=2 ? "🔥 x"+comboMult(state.combo).toFixed(1) : "";
   $("p-cat").textContent=it.c.toUpperCase();
-  // pre-fill meta but keep it hidden until the photo is ready
   $("p-name").textContent=it.n;
   $("p-hint").textContent=it.h||"";
   $("p-meta").classList.remove("ready");
   $("p-deal").style.display="none";
   updateDisplay();
   $("reveal").classList.remove("show");
-  // --- wait for image before starting the timer / showing the title ---
-  setLoading(true);
   const img=$("p-img");
-  img.onload=null;img.onerror=null;
-  const beginRound=state.round;
-  let started=false;
-  const go=()=>{
-    if(started||state.round!==beginRound)return; started=true;
-    revealMeta(it);
-    setLoading(false);
-    startTimer();
-  };
-  img.onload=go;
-  img.onerror=go;
   img.src=it.img; img.alt=it.n;
-  if(img.complete && img.naturalWidth>0){ go(); }            // cached
-  setTimeout(go, 4000);                                       // safety fallback
+  // image is already decoded -> reveal + start immediately
+  setLoading(false);
+  revealMeta(it);
+  startTimer();
   preloadAhead();
 }
 
@@ -432,17 +463,13 @@ function revealMeta(it){
   $("p-meta").classList.add("ready");
 }
 
-// Secretly warm up the next few product images so future rounds start instantly.
+// Warm up upcoming product images through the shared cache.
 function preloadAhead(){
   for(let k=1;k<=3;k++){
     const nxt=state.items[state.round+k];
-    if(nxt && !preloadAhead._seen.has(nxt.img)){
-      preloadAhead._seen.add(nxt.img);
-      const pi=new Image(); pi.src=nxt.img;
-    }
+    if(nxt) preloadImg(nxt.img);
   }
 }
-preloadAhead._seen=new Set();
 
 function setLoading(on){
   state.locked=on;
@@ -617,8 +644,22 @@ function buildPairs(n){
 }
 
 function loadDuel(){
+  const beginRound=state.round;
   const [a,b]=state.pairs[state.round];
   state.locked=true;
+  // only render this duel once BOTH photos are fully ready
+  showPrep(true);
+  waitForImages([a.img,b.img]).then(()=>{
+    if(state.round!==beginRound) return;   // navigated away
+    showPrep(false);
+    renderDuel(a,b);
+  });
+  // warm up next pair while this one plays
+  const np=state.pairs[state.round+1];
+  if(np) np.forEach(it=>preloadImg(it.img));
+}
+
+function renderDuel(a,b){
   $("d-round").textContent="Duel "+(state.round+1)+"/"+state.total;
   $("d-score").textContent=state.score;
   $("d-combo").textContent = state.combo>=2 ? "🔥 x"+comboMult(state.combo).toFixed(1) : "";
@@ -629,27 +670,11 @@ function loadDuel(){
     $("dcard-"+s).className="duel-card";
     $("d"+s+"-cat").textContent=it.c.toUpperCase();
     $("d"+s+"-name").textContent=it.n;
-    $("d"+s+"-meta").classList.remove("ready");
     const pr=$("d"+s+"-price"); pr.textContent=fmt(it.p); pr.classList.remove("show");
-    const img=$("d"+s+"-img"); img.classList.add("loading"); img.alt=it.n;
+    const img=$("d"+s+"-img"); img.classList.remove("loading"); img.alt=it.n; img.src=it.img;
+    $("d"+s+"-meta").classList.add("ready");
   });
-  // wait for BOTH images
-  const beginRound=state.round; let done=0, started=false;
-  const one=()=>{ if(++done>=2) go(); };
-  const go=()=>{
-    if(started||state.round!==beginRound)return; started=true;
-    ["0","1"].forEach(s=>{ $("d"+s+"-img").classList.remove("loading"); $("d"+s+"-meta").classList.add("ready"); });
-    startDuelTimer();
-  };
-  [["0",a],["1",b]].forEach(([s,it])=>{
-    const img=$("d"+s+"-img"); img.onload=null;img.onerror=null;
-    img.onload=one; img.onerror=one; img.src=it.img;
-    if(img.complete && img.naturalWidth>0) one();
-  });
-  setTimeout(go,4000);
-  // preload next pair
-  const np=state.pairs[state.round+1];
-  if(np) np.forEach(it=>{const pi=new Image();pi.src=it.img;});
+  startDuelTimer();
 }
 
 function startDuelTimer(){
