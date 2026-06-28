@@ -142,6 +142,36 @@
   .reveal .pts{font-size:22px;font-weight:900;color:var(--good);margin:8px 0 20px;}
   .reveal .next{background:var(--action-yellow);color:#0a1838;font-weight:900;border:none;border-radius:14px;padding:14px 40px;font-size:18px;cursor:pointer;}
 
+  /* ---- Duel (Hoger of Lager) ---- */
+  .duel-q{text-align:center;font-size:20px;font-weight:800;margin:4px 0 12px;}
+  .duel-q span{color:var(--action-yellow);}
+  .duel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;align-items:stretch;}
+  .duel-card{
+    background:linear-gradient(180deg,#fff,#eef2ff);color:#0a1838;border-radius:16px;padding:12px 10px 14px;
+    text-align:center;position:relative;cursor:pointer;border:3px solid transparent;
+    transition:transform .1s, border-color .15s;display:flex;flex-direction:column;
+    box-shadow:0 8px 20px rgba(0,0,0,.3);
+  }
+  .duel-card:active{transform:scale(.97);}
+  .duel-card .cat{position:absolute;top:8px;left:8px;background:var(--action-blue);color:#fff;font-size:10px;font-weight:800;padding:3px 6px;border-radius:5px;letter-spacing:.3px;}
+  .duel-card .img{width:120px;height:120px;margin:14px auto 8px;border-radius:12px;background:#fff;object-fit:contain;}
+  .duel-card .img.loading{animation:imgPulse 1s ease-in-out infinite;}
+  .duel-card .dmeta{opacity:0;transition:opacity .3s;min-height:34px;display:flex;align-items:center;justify-content:center;flex:1;}
+  .duel-card .dmeta.ready{opacity:1;}
+  .duel-card .name{font-size:13.5px;font-weight:700;line-height:1.2;}
+  .duel-card .dprice{font-size:24px;font-weight:900;color:var(--action-blue);margin-top:6px;height:28px;opacity:0;transform:translateY(4px);transition:.25s;}
+  .duel-card .dprice.show{opacity:1;transform:none;}
+  .duel-card.correct{border-color:var(--good);box-shadow:0 0 0 2px var(--good),0 8px 20px rgba(22,199,132,.4);}
+  .duel-card.wrong{border-color:var(--bad);opacity:.75;}
+  .duel-card.disabled{cursor:default;}
+  .vs{position:absolute;left:50%;top:48px;transform:translateX(-50%);z-index:2;
+    background:var(--action-yellow);color:#0a1838;font-weight:900;font-size:14px;
+    width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    border:3px solid var(--bg);box-shadow:0 4px 10px rgba(0,0,0,.4);}
+  .duel-foot{margin-top:16px;text-align:center;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
+  .duel-verdict{font-size:22px;font-weight:900;min-height:28px;}
+  .duel-foot .next{background:var(--action-yellow);color:#0a1838;font-weight:900;border:none;border-radius:14px;padding:13px 38px;font-size:17px;cursor:pointer;}
+
   /* ---- Results ---- */
   .results{text-align:center;}
   .results .big{font-size:54px;font-weight:900;color:var(--action-yellow);margin:6px 0;}
@@ -190,13 +220,17 @@
         <div class="emoji">💀</div>
         <div><div class="t">Sudden Death</div><div class="d">Blijf spelen tot je er meer dan €2 naast zit.</div></div>
       </div>
+      <div class="mode-btn" data-mode="duel">
+        <div class="emoji">⚖️</div>
+        <div><div class="t">Hoger of Lager</div><div class="d">Twee producten — tik op de duurste. 8 snelle duels.</div></div>
+      </div>
     </div>
     <div class="stat-row">
       <div class="stat"><div class="n" id="stat-best">0</div><div class="l">Beste score</div></div>
       <div class="stat"><div class="n" id="stat-streak">0</div><div class="l">Dag-streak</div></div>
       <div class="stat"><div class="n" id="stat-played">0</div><div class="l">Gespeeld</div></div>
     </div>
-    <div class="footer">Prototype · prijzen zijn voorbeeld­data</div>
+    <div class="footer">Live Action-data · fanproject, niet geaffilieerd met Action</div>
   </section>
 
   <!-- GAME -->
@@ -249,6 +283,39 @@
       <div class="pts" id="r-pts">+0 punten</div>
       <a id="r-link" href="#" target="_blank" rel="noopener" style="color:var(--muted);font-size:13px;text-decoration:underline;margin-bottom:14px;display:none">🔗 Bekijk bij Action</a>
       <button class="next" id="next-btn">Volgende →</button>
+    </div>
+  </section>
+
+  <!-- DUEL (Hoger of Lager) -->
+  <section id="screen-duel" class="screen">
+    <div class="topbar">
+      <div class="round-pill" id="d-round">Duel 1/8</div>
+      <div class="combo" id="d-combo"></div>
+      <div class="score-pill">Score <b id="d-score">0</b></div>
+    </div>
+    <div class="timer-wrap"><div class="timer-bar" id="d-timer"></div></div>
+
+    <div class="duel-q">Welke is <span>duurder</span>? 💰</div>
+
+    <div class="duel-grid">
+      <div class="duel-card" id="dcard-0" data-side="0">
+        <span class="cat" id="d0-cat"></span>
+        <img class="img" id="d0-img" alt="" />
+        <div class="dmeta" id="d0-meta"><div class="name" id="d0-name"></div></div>
+        <div class="dprice" id="d0-price"></div>
+      </div>
+      <div class="vs" id="duel-vs">VS</div>
+      <div class="duel-card" id="dcard-1" data-side="1">
+        <span class="cat" id="d1-cat"></span>
+        <img class="img" id="d1-img" alt="" />
+        <div class="dmeta" id="d1-meta"><div class="name" id="d1-name"></div></div>
+        <div class="dprice" id="d1-price"></div>
+      </div>
+    </div>
+
+    <div class="duel-foot">
+      <div class="duel-verdict" id="d-verdict"></div>
+      <button class="next" id="d-next" style="display:none">Volgende →</button>
     </div>
   </section>
 
@@ -519,8 +586,142 @@ function endGame(){
   show("screen-results");
 }
 
-/* ============ SHARE ============ */
+/* ============ DUEL: Hoger of Lager ============ */
+const DUEL_ROUNDS=8;
+
+function startDuel(){
+  const pairs=buildPairs(DUEL_ROUNDS);
+  state={mode:"duel",pairs,total:pairs.length,round:0,score:0,combo:0,maxCombo:0,
+         results:[],locked:false,timer:null,qStart:0};
+  show("screen-duel");
+  loadDuel();
+}
+
+function buildPairs(n){
+  const pool=pickItems(ITEMS.length, mulberry32(Math.random()*1e9|0));
+  const pairs=[]; let i=0;
+  while(pairs.length<n && i<pool.length-1){
+    const a=pool[i]; let j=i+1, made=false;
+    for(;j<pool.length;j++){
+      const b=pool[j];
+      const hi=Math.max(a.p,b.p), gap=Math.abs(a.p-b.p);
+      if(gap>=0.50 && gap>=hi*0.12){ // meaningful, fair gap
+        pairs.push(Math.random()<0.5?[a,b]:[b,a]);
+        pool.splice(j,1); made=true; break;
+      }
+    }
+    i++;
+    if(!made && pairs.length<n && i<pool.length-1){ /* skip a, try next */ }
+  }
+  return pairs;
+}
+
+function loadDuel(){
+  const [a,b]=state.pairs[state.round];
+  state.locked=true;
+  $("d-round").textContent="Duel "+(state.round+1)+"/"+state.total;
+  $("d-score").textContent=state.score;
+  $("d-combo").textContent = state.combo>=2 ? "🔥 x"+comboMult(state.combo).toFixed(1) : "";
+  $("d-verdict").textContent=""; $("d-verdict").style.color="";
+  $("d-next").style.display="none";
+  $("duel-vs").style.display="flex";
+  [["0",a],["1",b]].forEach(([s,it])=>{
+    $("dcard-"+s).className="duel-card";
+    $("d"+s+"-cat").textContent=it.c.toUpperCase();
+    $("d"+s+"-name").textContent=it.n;
+    $("d"+s+"-meta").classList.remove("ready");
+    const pr=$("d"+s+"-price"); pr.textContent=fmt(it.p); pr.classList.remove("show");
+    const img=$("d"+s+"-img"); img.classList.add("loading"); img.alt=it.n;
+  });
+  // wait for BOTH images
+  const beginRound=state.round; let done=0, started=false;
+  const one=()=>{ if(++done>=2) go(); };
+  const go=()=>{
+    if(started||state.round!==beginRound)return; started=true;
+    ["0","1"].forEach(s=>{ $("d"+s+"-img").classList.remove("loading"); $("d"+s+"-meta").classList.add("ready"); });
+    startDuelTimer();
+  };
+  [["0",a],["1",b]].forEach(([s,it])=>{
+    const img=$("d"+s+"-img"); img.onload=null;img.onerror=null;
+    img.onload=one; img.onerror=one; img.src=it.img;
+    if(img.complete && img.naturalWidth>0) one();
+  });
+  setTimeout(go,4000);
+  // preload next pair
+  const np=state.pairs[state.round+1];
+  if(np) np.forEach(it=>{const pi=new Image();pi.src=it.img;});
+}
+
+function startDuelTimer(){
+  state.locked=false;
+  const bar=$("d-timer"); bar.style.transition="none"; bar.style.transform="scaleX(1)";
+  void bar.offsetWidth;
+  state.qStart=performance.now();
+  clearInterval(state.timer);
+  state.timer=setInterval(()=>{
+    const el=(performance.now()-state.qStart)/1000;
+    bar.style.transform="scaleX("+Math.max(0,1-el/ROUND_TIME)+")";
+    if(el>=ROUND_TIME){clearInterval(state.timer);chooseDuel(-1);}
+  },50);
+}
+
+function chooseDuel(side){
+  if(state.locked)return;
+  state.locked=true; clearInterval(state.timer);
+  const [a,b]=state.pairs[state.round];
+  const correctSide = a.p>=b.p ? 0 : 1;
+  const elapsed=(performance.now()-state.qStart)/1000;
+  const right = side===correctSide;
+  let pts=0;
+  if(right){
+    const speed=Math.round(400*Math.max(0,1-elapsed/ROUND_TIME));
+    state.combo++; state.maxCombo=Math.max(state.maxCombo,state.combo);
+    pts=Math.round((600+speed)*comboMult(state.combo));
+  } else { state.combo=0; }
+  state.score+=pts;
+  state.results.push({a,b,correctSide,picked:side,right,pts});
+  // reveal prices + highlight
+  ["0","1"].forEach(s=>{$("d"+s+"-price").classList.add("show");$("dcard-"+s).classList.add("disabled");});
+  $("duel-vs").style.display="none";
+  $("dcard-"+correctSide).classList.add("correct");
+  if(side>=0 && !right) $("dcard-"+side).classList.add("wrong");
+  const v=$("d-verdict");
+  if(side<0){v.textContent="⏰ Te laat!";v.style.color="var(--bad)";}
+  else if(right){v.textContent="✅ Goed! +"+pts+(state.combo>=2?"  🔥x"+comboMult(state.combo).toFixed(1):"");v.style.color="var(--good)";}
+  else{v.textContent="❌ Mis!";v.style.color="var(--bad)";}
+  $("d-score").textContent=state.score;
+  $("d-next").textContent = (state.round>=state.total-1)?"Resultaat →":"Volgende →";
+  $("d-next").style.display="inline-block";
+}
+
+function nextDuel(){
+  if(state.round>=state.total-1){endDuel();return;}
+  state.round++; loadDuel();
+}
+
+function endDuel(){
+  const s=store.get();
+  s.played=(s.played||0)+1;
+  if(!s.best||state.score>s.best)s.best=state.score;
+  store.set(s);
+  const correct=state.results.filter(r=>r.right).length;
+  $("res-mode").textContent="Hoger of Lager · "+correct+"/"+state.total+" goed";
+  $("res-score").textContent=state.score;
+  const rank=[...RANKS].reverse().find(r=>state.score>=r.min)||RANKS[0];
+  $("res-rank").textContent=rank.t;
+  $("res-grid").textContent=state.results.map(r=>r.right?"🟩":(r.picked<0?"⬛":"🟥")).join("");
+  $("res-breakdown").innerHTML=state.results.map(r=>{
+    const win=r.correctSide===0?r.a:r.b;
+    return `<div class="row"><div class="nm"><img src="${win.img}" style="width:26px;height:26px;border-radius:5px;background:#fff;object-fit:contain"/> ${win.n} ${fmt(win.p)}</div><div class="pt" style="color:${r.right?'var(--good)':'var(--bad)'}">${r.right?'+'+r.pts:'✗'}</div></div>`;
+  }).join("");
+  show("screen-results");
+}
 function shareText(){
+  if(state.mode==="duel"){
+    const grid=state.results.map(r=>r.right?"🟩":(r.picked<0?"⬛":"🟥")).join("");
+    const correct=state.results.filter(r=>r.right).length;
+    return `Prijspaniek 🛒 · Hoger of Lager\nScore: ${state.score} (${correct}/${state.total})\n${grid}\nSpeel mee: graafg.github.io/prijspaniek`;
+  }
   const grid=state.results.map(r=>{
     if(r.timeout)return "⬛";
     if(r.exact)return "🟨";
@@ -529,7 +730,7 @@ function shareText(){
     return "🟥";
   }).join("");
   const day = state.mode==="daily" ? " #"+seedFromDate() : "";
-  return `Action Price Panic 🛒${day}\nScore: ${state.score}\n${grid}\nSpeel mee!`;
+  return `Prijspaniek 🛒${day}\nScore: ${state.score}\n${grid}\nSpeel mee: graafg.github.io/prijspaniek`;
 }
 function doShare(){
   const txt=shareText();
@@ -542,14 +743,26 @@ let toastT;
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2200);}
 
 /* ============ EVENTS ============ */
-document.querySelectorAll(".mode-btn").forEach(b=>b.addEventListener("click",()=>startGame(b.dataset.mode)));
+document.querySelectorAll(".mode-btn").forEach(b=>b.addEventListener("click",()=>{
+  const m=b.dataset.mode;
+  if(m==="duel")startDuel(); else startGame(m);
+}));
 $("keypad").addEventListener("click",e=>{const k=e.target.closest(".key");if(k)pressKey(k.dataset.k);});
 $("submit-btn").addEventListener("click",()=>submitGuess(false));
 $("next-btn").addEventListener("click",nextRound);
 $("share-btn").addEventListener("click",doShare);
-$("again-btn").addEventListener("click",()=>startGame(state.mode));
+$("again-btn").addEventListener("click",()=>{ state.mode==="duel"?startDuel():startGame(state.mode); });
 $("home-link").addEventListener("click",e=>{e.preventDefault();refreshStats();show("screen-start");});
+$("dcard-0").addEventListener("click",()=>chooseDuel(0));
+$("dcard-1").addEventListener("click",()=>chooseDuel(1));
+$("d-next").addEventListener("click",nextDuel);
 document.addEventListener("keydown",e=>{
+  if($("screen-duel").classList.contains("active")){
+    if(e.key==="1"||e.key==="ArrowLeft")chooseDuel(0);
+    else if(e.key==="2"||e.key==="ArrowRight")chooseDuel(1);
+    else if(e.key==="Enter" && $("d-next").style.display!=="none")nextDuel();
+    return;
+  }
   if(!$("screen-game").classList.contains("active"))return;
   if(e.key>="0"&&e.key<="9")pressKey(e.key);
   else if(e.key==="Backspace")pressKey("del");
