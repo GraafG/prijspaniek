@@ -3012,6 +3012,30 @@
 "href": "https://www.action.com/nl-nl/p/3218607/simba-evi-love-pop-met-pony/"
 },
 {
+"code": "3218129",
+"name": "Fidget-puzzel bouwen",
+"desc": "24,5 x 16,5 cm",
+"brand": "",
+"cat": "Speelgoed",
+"price": 1.49,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3218129_8711292209126-110_01_dbcgjh",
+"href": "https://www.action.com/nl-nl/p/3218129/fidget-puzzel-bouwen/"
+},
+{
+"code": "3216974",
+"name": "Gear2Play robothond",
+"desc": "Diverse kleuren",
+"brand": "",
+"cat": "Speelgoed",
+"price": 9.95,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3216974_6097014721766-110_02_ub50pa",
+"href": "https://www.action.com/nl-nl/p/3216974/gear2play-robothond/"
+},
+{
 "code": "3215117",
 "name": "Pop-it sleutelhanger",
 "desc": "Diverse varianten",
@@ -3034,30 +3058,6 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/30641366",
 "href": "https://www.action.com/nl-nl/p/3212557/stuntauto/"
-},
-{
-"code": "3211919",
-"name": "Maak je eigen slijm",
-"desc": "17-delig",
-"brand": "",
-"cat": "Speelgoed",
-"price": 4.99,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3211919_8714627026641-111_01_f3nbds",
-"href": "https://www.action.com/nl-nl/p/3211919/maak-je-eigen-slijm/"
-},
-{
-"code": "3208553",
-"name": "Stickerboek",
-"desc": "Diverse varianten",
-"brand": "",
-"cat": "Speelgoed",
-"price": 0.44,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3208553_8715275532317-111_01_mggaer",
-"href": "https://www.action.com/nl-nl/p/3208553/stickerboek/"
 },
 {
 "code": "3221782",
@@ -3244,7 +3244,7 @@
 "name": "Bloempot",
 "desc": "Ø 14 x 13 cm | diverse kleuren",
 "brand": "",
-"cat": "Tuin",
+"cat": "Wonen",
 "price": 2.99,
 "original": null,
 "isDeal": false,
@@ -3406,6 +3406,18 @@
 "isDeal": true,
 "image": "https://asset.action.com/image/upload/37568312",
 "href": "https://www.action.com/nl-nl/p/2520023/citin-mierenlokdoos/"
+},
+{
+"code": "3219906",
+"name": "Philips schijnwerper",
+"desc": "24,5 watt | 2800 lumen",
+"brand": "Philips",
+"cat": "Tuin",
+"price": 9.95,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3219906_8721103103116-111_01_pgokjx",
+"href": "https://www.action.com/nl-nl/p/3219906/philips-schijnwerper/"
 },
 {
 "code": "3016132",
