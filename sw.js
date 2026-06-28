@@ -1,5 +1,5 @@
 /* Prijspaniek service worker — offline-capable PWA shell */
-const VERSION = "prijspaniek-v2";
+const VERSION = "prijspaniek-v3";
 const CORE = [
   "./",
   "./index.html",

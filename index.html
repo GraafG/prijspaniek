@@ -237,6 +237,11 @@
   .receipt .rh{text-align:center;font-weight:900;font-size:18px;color:var(--action-blue);letter-spacing:.5px;margin-bottom:8px;}
   .receipt .rs{border-top:1px dashed #999;border-bottom:1px dashed #999;padding:8px 0;margin:8px 0;}
   .receipt .rrc{display:flex;justify-content:space-between;gap:10px;font-size:13px;margin:5px 0;}
+  .receipt .rrc span:first-child{overflow:hidden;text-overflow:ellipsis;}
+  .receipt .rrc.diff{color:#444;font-size:12px;padding-left:10px;}
+  .receipt .item-block{border-top:1px dotted #bbb;padding-top:7px;margin-top:7px;}
+  .receipt .item-block:first-child{border-top:none;margin-top:0;padding-top:0;}
+  .receipt .item-name{font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:250px;}
   .receipt .total{font-size:17px;font-weight:900;}
   .receipt .tiny{text-align:center;font-size:11px;margin-top:8px;color:#555;}
   #confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:80;}
@@ -697,10 +702,60 @@ function launchConfetti(){
   }
   setTimeout(()=>box.innerHTML="",2300);
 }
+function esc(s){return String(s).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));}
+function shortName(n){return esc(n.length>34?n.slice(0,31)+"...":n);}
+function diffText(diff){return diff<0.005?"precies":fmt(diff)+" verschil";}
+function receiptProductLines(){
+  if(!state || !state.results) return "";
+  if(state.mode==="duel"){
+    return state.results.map((r,i)=>{
+      const diff=Math.abs(r.a.p-r.b.p);
+      const picked=r.picked<0?"geen keuze":(r.picked===0?r.a.n:r.b.n);
+      const win=r.correctSide===0?r.a:r.b;
+      return `<div class="item-block">
+        <div class="rrc"><span class="item-name">${i+1}. ${shortName(r.a.n)}</span><span>${fmt(r.a.p)}</span></div>
+        <div class="rrc"><span class="item-name">   ${shortName(r.b.n)}</span><span>${fmt(r.b.p)}</span></div>
+        <div class="rrc diff"><span>Verschil ${fmt(diff)} · gekozen: ${shortName(picked)}</span><span>${r.right?"OK":"MIS"}</span></div>
+        <div class="rrc diff"><span>Duurste: ${shortName(win.n)}</span><span>${r.right?"+"+r.pts:"0"}</span></div>
+      </div>`;
+    }).join("");
+  }
+  if(state.mode==="basket"){
+    return state.results.map((r,i)=>{
+      const items=r.items.map(it=>`<div class="rrc"><span class="item-name">   ${shortName(it.n)}</span><span>${fmt(it.p)}</span></div>`).join("");
+      return `<div class="item-block">
+        <div class="rrc"><span class="item-name">${i+1}. Mandje (${r.items.length} items)</span><span>${fmt(r.actual)}</span></div>
+        ${items}
+        <div class="rrc diff"><span>Jouw gok ${fmt(r.guess)} · ${diffText(r.diff)}</span><span>${r.right?"+"+r.pts:"0"}</span></div>
+      </div>`;
+    }).join("");
+  }
+  if(state.mode==="five"){
+    return state.results.map((r,i)=>{
+      const items=r.items.map(it=>`<div class="rrc"><span class="item-name">   ${shortName(it.n)}</span><span>${fmt(it.p)}</span></div>`).join("");
+      const d=Math.abs(r.total-5);
+      const pick=r.choice==null?"geen keuze":(r.choice==="over"?"boven":"onder");
+      return `<div class="item-block">
+        <div class="rrc"><span class="item-name">${i+1}. €5 Match (${r.items.length} item${r.items.length>1?"s":""})</span><span>${fmt(r.total)}</span></div>
+        ${items}
+        <div class="rrc diff"><span>${fmt(d)} ${r.total>=5?"boven":"onder"} €5 · gekozen: ${pick}</span><span>${r.right?"+"+r.pts:"0"}</span></div>
+      </div>`;
+    }).join("");
+  }
+  return state.results.map((r,i)=>{
+    const d=diffText(r.diff);
+    const line=r.timeout?"geen gok":`jouw gok ${fmt(r.guess)} · ${d}`;
+    return `<div class="item-block">
+      <div class="rrc"><span class="item-name">${i+1}. ${shortName(r.it.n)}</span><span>${fmt(r.it.p)}</span></div>
+      <div class="rrc diff"><span>${line}</span><span>${r.pts?("+"+r.pts):"0"}</span></div>
+    </div>`;
+  }).join("");
+}
 function renderReceipt(modeLabel, detailLine){
   const badge=scoreBadge(state.score);
   const now=new Date();
   const receipt=$("receipt");
+  const lines=receiptProductLines();
   receipt.style.display="block";
   receipt.innerHTML=`
     <div class="rh">ACTION BONNETJE</div>
@@ -708,6 +763,7 @@ function renderReceipt(modeLabel, detailLine){
     <div class="rrc"><span>Datum</span><span>${now.toLocaleDateString("nl-NL")}</span></div>
     <div class="rrc"><span>Spel</span><span>${modeLabel}</span></div>
     <div class="rrc"><span>Rang</span><span>${badge?badge.t:"Nog even sparen"}</span></div>
+    <div class="rs">${lines}</div>
     <div class="rs">
       <div class="rrc total"><span>SCORE</span><span>${state.score}</span></div>
       <div class="rrc"><span>${detailLine}</span><span>OK</span></div>
