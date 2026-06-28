@@ -187,6 +187,27 @@
   .duel-verdict{font-size:22px;font-weight:900;min-height:28px;}
   .duel-foot .next{background:var(--action-yellow);color:#0a1838;font-weight:900;border:none;border-radius:14px;padding:13px 38px;font-size:17px;cursor:pointer;}
 
+  /* ---- Basket + Five euro modes ---- */
+  .basket-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:6px 0 10px;}
+  .basket-item,.swipe-item{
+    background:linear-gradient(180deg,#fff,#eef2ff);color:#0a1838;border-radius:16px;padding:10px;
+    text-align:center;box-shadow:0 8px 20px rgba(0,0,0,.25);position:relative;overflow:hidden;
+  }
+  .basket-item img,.swipe-item img{width:94px;height:94px;object-fit:contain;background:#fff;border-radius:12px;display:block;margin:0 auto 6px;}
+  .basket-item .nm,.swipe-item .nm{font-size:12px;font-weight:800;line-height:1.15;min-height:28px;}
+  .basket-sum{font-size:14px;color:var(--muted);text-align:center;margin:8px 0 10px;}
+  .choice-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+  .choice-btn{border:none;border-radius:16px;padding:18px 10px;font-size:19px;font-weight:900;cursor:pointer;}
+  .choice-btn.under{background:var(--good);color:#06122e;}
+  .choice-btn.over{background:var(--action-yellow);color:#06122e;}
+  .choice-btn:active{transform:scale(.97);}
+  .swipe-stack{display:flex;flex-direction:column;gap:10px;margin:4px 0 12px;}
+  .swipe-stack.multi{display:grid;grid-template-columns:repeat(2,1fr);}
+  .swipe-item{transform:rotate(-1deg);}
+  .swipe-stack .swipe-item:nth-child(even){transform:rotate(1deg);}
+  .swipe-verdict{text-align:center;font-size:22px;font-weight:900;min-height:34px;margin-top:12px;}
+  .swipe-price{text-align:center;color:var(--action-yellow);font-weight:900;font-size:24px;min-height:30px;}
+
   /* ---- Results ---- */
   .results{text-align:center;}
   .results .big{font-size:54px;font-weight:900;color:var(--action-yellow);margin:6px 0;}
@@ -202,6 +223,25 @@
   .btn{flex:1;border:none;border-radius:14px;padding:15px;font-size:16px;font-weight:800;cursor:pointer;}
   .btn.primary{background:var(--action-yellow);color:#0a1838;}
   .btn.ghost{background:var(--card);color:var(--text);border:1px solid #2a4684;}
+  .badge{
+    display:none;margin:10px auto 4px;background:linear-gradient(135deg,var(--action-yellow),#fff0a0);
+    color:#0a1838;border:2px solid #fff;border-radius:999px;padding:8px 14px;font-size:15px;font-weight:900;width:max-content;max-width:100%;
+    box-shadow:0 8px 20px rgba(255,210,0,.25);
+  }
+  .receipt{
+    display:none;background:#fff;color:#111;border-radius:6px;margin:14px 0;padding:14px 16px;text-align:left;
+    font-family:"Courier New",monospace;box-shadow:0 12px 28px rgba(0,0,0,.35);position:relative;
+  }
+  .receipt:before,.receipt:after{content:"";position:absolute;left:0;right:0;height:7px;background:repeating-linear-gradient(90deg,transparent 0 8px,#06122e 8px 14px);}
+  .receipt:before{top:-1px}.receipt:after{bottom:-1px}
+  .receipt .rh{text-align:center;font-weight:900;font-size:18px;color:var(--action-blue);letter-spacing:.5px;margin-bottom:8px;}
+  .receipt .rs{border-top:1px dashed #999;border-bottom:1px dashed #999;padding:8px 0;margin:8px 0;}
+  .receipt .rrc{display:flex;justify-content:space-between;gap:10px;font-size:13px;margin:5px 0;}
+  .receipt .total{font-size:17px;font-weight:900;}
+  .receipt .tiny{text-align:center;font-size:11px;margin-top:8px;color:#555;}
+  #confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:80;}
+  .confetti-piece{position:absolute;top:-18px;width:9px;height:14px;border-radius:2px;animation:confettiFall 1.7s linear forwards;}
+  @keyframes confettiFall{to{transform:translateY(110vh) rotate(720deg);opacity:.9;}}
 
   .toast{
     position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);
@@ -302,6 +342,14 @@
         <div class="emoji">⚖️</div>
         <div><div class="t">Hoger of Lager</div><div class="d">Twee producten — tik op de duurste. 8 snelle duels.</div></div>
       </div>
+      <div class="mode-btn" data-mode="basket">
+        <div class="emoji">🧺</div>
+        <div><div class="t">Mandje Modus</div><div class="d">Meerdere producten tegelijk — raad de totaalprijs van het mandje.</div></div>
+      </div>
+      <div class="mode-btn" data-mode="five">
+        <div class="emoji">💘</div>
+        <div><div class="t">€5 Match</div><div class="d">Tinder-tempo: swipe/tik of het product of mandje onder of boven €5 zit.</div></div>
+      </div>
     </div>
 
     <div class="field-lbl">Moeilijkheid</div>
@@ -384,6 +432,57 @@
     </div>
   </section>
 
+  <!-- BASKET MODE -->
+  <section id="screen-basket" class="screen">
+    <div class="topbar">
+      <div class="round-pill" id="b-round">Mandje 1/5</div>
+      <div class="combo" id="b-combo"></div>
+      <div class="score-pill">Score <b id="b-score">0</b></div>
+    </div>
+    <div class="timer-wrap"><div class="timer-bar" id="b-timer"></div></div>
+    <div class="basket-sum" id="b-question">Wat kost dit mandje samen?</div>
+    <div class="basket-grid" id="basket-grid"></div>
+    <div class="answer">
+      <div class="display blink" id="b-display"><span class="cur">€</span><span id="b-disp-val">0,00</span></div>
+    </div>
+    <div class="keypad" id="b-keypad">
+      <div class="key" data-k="1">1</div><div class="key" data-k="2">2</div><div class="key" data-k="3">3</div>
+      <div class="key" data-k="4">4</div><div class="key" data-k="5">5</div><div class="key" data-k="6">6</div>
+      <div class="key" data-k="7">7</div><div class="key" data-k="8">8</div><div class="key" data-k="9">9</div>
+      <div class="key alt" data-k="del">⌫</div><div class="key" data-k="0">0</div><div class="key alt" data-k="clr">C</div>
+      <button class="submit" id="b-submit">MANDJE! 🧺</button>
+    </div>
+    <div class="reveal" id="b-reveal">
+      <div class="verdict" id="b-verdict">Bijna!</div>
+      <div class="delta" id="b-delta"></div>
+      <div class="prices">
+        <div class="pbox"><div class="l">Jouw gok</div><div class="v" id="b-guess">€0,00</div></div>
+        <div class="pbox actual"><div class="l">Mandje</div><div class="v" id="b-actual">€0,00</div></div>
+      </div>
+      <div class="pts" id="b-pts">+0 punten</div>
+      <button class="next" id="b-next">Volgende →</button>
+    </div>
+  </section>
+
+  <!-- FIVE EURO MATCH -->
+  <section id="screen-five" class="screen">
+    <div class="topbar">
+      <div class="round-pill" id="f-round">Match 1/10</div>
+      <div class="combo" id="f-combo"></div>
+      <div class="score-pill">Score <b id="f-score">0</b></div>
+    </div>
+    <div class="timer-wrap"><div class="timer-bar" id="f-timer"></div></div>
+    <div class="duel-q">Is dit <span>onder of boven €5</span>? 💘</div>
+    <div class="swipe-stack" id="five-stack"></div>
+    <div class="choice-row" id="five-choices">
+      <button class="choice-btn under" id="f-under">👈 Onder €5</button>
+      <button class="choice-btn over" id="f-over">Boven €5 👉</button>
+    </div>
+    <div class="swipe-verdict" id="f-verdict"></div>
+    <div class="swipe-price" id="f-price"></div>
+    <button class="next" id="f-next" style="display:none;align-self:center;background:var(--action-yellow);color:#0a1838;font-weight:900;border:none;border-radius:14px;padding:13px 38px;font-size:17px;cursor:pointer;">Volgende →</button>
+  </section>
+
   <!-- DUEL (Hoger of Lager) -->
   <section id="screen-duel" class="screen">
     <div class="topbar">
@@ -424,8 +523,10 @@
       <div class="lbl" id="res-mode">Daily Deal Dash</div>
       <div class="big" id="res-score">0</div>
       <div class="rank" id="res-rank">🛒 Schappenvuller</div>
+      <div class="badge" id="res-badge"></div>
       <div id="res-challenge" style="display:none;font-weight:800;margin:6px 0;color:var(--action-yellow)"></div>
       <div class="grid-emoji" id="res-grid"></div>
+      <div class="receipt" id="receipt"></div>
       <div class="breakdown" id="res-breakdown"></div>
       <button class="btn primary" id="challenge-btn" style="width:100%;margin-bottom:10px">🎯 Daag een vriend uit</button>
       <div class="btn-row">
@@ -441,6 +542,7 @@
 
 </div>
 <div class="toast" id="toast"></div>
+<div id="confetti"></div>
 
 <script src="products.js"></script>
 <script>
@@ -456,6 +558,11 @@ const RANKS = [
   {min:5000, t:"💶 Koopjesjager"},
   {min:7000, t:"🧠 Action-kenner"},
   {min:8800, t:"👑 Prijsorakel"},
+];
+const BADGES = [
+  {min:9000, t:"🏆 Action Manager"},
+  {min:6500, t:"🧾 Action Inkoper"},
+  {min:3500, t:"💙 Action Fan"},
 ];
 
 /* ============ STATE ============ */
@@ -554,7 +661,7 @@ function refreshStats(){
   $("stat-played").textContent=s.played||0;
   renderRecords(s);
 }
-const MODE_NAMES={daily:"Daily Deal Dash",quick:"Quick Play",sudden:"Sudden Death",duel:"Hoger of Lager"};
+const MODE_NAMES={daily:"Daily Deal Dash",quick:"Quick Play",sudden:"Sudden Death",duel:"Hoger of Lager",basket:"Mandje Modus",five:"€5 Match"};
 function renderRecords(s){
   s=s||store.get();
   const bm=s.bestByMode||{};
@@ -574,6 +681,47 @@ function recordScore(mode,score){
 /* ============ SCREEN NAV ============ */
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active");}
 
+/* ============ RESULT POLISH: badges, receipt, confetti ============ */
+function scoreBadge(score){return BADGES.find(b=>score>=b.min)||null;}
+function launchConfetti(){
+  const box=$("confetti"), colors=["#ffd200","#0a3d91","#16c784","#ff4d4d","#fff"];
+  box.innerHTML="";
+  for(let i=0;i<70;i++){
+    const p=document.createElement("i");
+    p.className="confetti-piece";
+    p.style.left=(Math.random()*100)+"vw";
+    p.style.background=colors[i%colors.length];
+    p.style.animationDelay=(Math.random()*0.45)+"s";
+    p.style.transform=`rotate(${Math.random()*180}deg)`;
+    box.appendChild(p);
+  }
+  setTimeout(()=>box.innerHTML="",2300);
+}
+function renderReceipt(modeLabel, detailLine){
+  const badge=scoreBadge(state.score);
+  const now=new Date();
+  const receipt=$("receipt");
+  receipt.style.display="block";
+  receipt.innerHTML=`
+    <div class="rh">ACTION BONNETJE</div>
+    <div class="rrc"><span>Winkel</span><span>Prijspaniek</span></div>
+    <div class="rrc"><span>Datum</span><span>${now.toLocaleDateString("nl-NL")}</span></div>
+    <div class="rrc"><span>Spel</span><span>${modeLabel}</span></div>
+    <div class="rrc"><span>Rang</span><span>${badge?badge.t:"Nog even sparen"}</span></div>
+    <div class="rs">
+      <div class="rrc total"><span>SCORE</span><span>${state.score}</span></div>
+      <div class="rrc"><span>${detailLine}</span><span>OK</span></div>
+    </div>
+    <div class="tiny">Niet goed gegokt? Met de ruilbon bijna geld terug 😉</div>`;
+}
+function polishResults(modeLabel, detailLine){
+  const badge=scoreBadge(state.score);
+  const el=$("res-badge");
+  if(badge){ el.textContent=badge.t; el.style.display="block"; launchConfetti(); sfx.great(); }
+  else { el.style.display="none"; }
+  renderReceipt(modeLabel, detailLine);
+}
+
 /* ============ GAME FLOW ============ */
 function startGame(mode, opts={}){
   const pool=activePool();
@@ -591,12 +739,13 @@ function startGame(mode, opts={}){
 
 async function loadRound(){
   const beginRound=state.round;
+  const beginMode=state.mode;
   const it=state.items[state.round];
   state.input="";state.locked=true;
   // make sure the photo is fully ready BEFORE we render this round
   showPrep(true);
   await waitForImages([it.img]);
-  if(state.round!==beginRound) return;   // user navigated away meanwhile
+  if(state.round!==beginRound || state.mode!==beginMode) return;   // user navigated away meanwhile
   showPrep(false);
   $("round-pill").textContent = state.mode==="sudden" ? "Ronde "+(state.round+1) : "Ronde "+(state.round+1)+"/"+state.total;
   $("score-now").textContent=state.score;
@@ -792,6 +941,7 @@ function endGame(){
   const rank=[...RANKS].reverse().find(r=>state.score>=r.min)||RANKS[0];
   $("res-rank").textContent=rank.t;
   showChallengeOutcome();
+  polishResults(modeName, state.results.length+" rondes");
   // emoji grid
   $("res-grid").textContent=state.results.map(r=>{
     if(r.timeout)return "⬛";
@@ -804,6 +954,209 @@ function endGame(){
   // breakdown
   $("res-breakdown").innerHTML=state.results.map(r=>
     `<div class="row"><div class="nm"><img src="${r.it.img}" style="width:26px;height:26px;border-radius:5px;background:#fff;object-fit:contain"/> ${r.it.n}</div><div class="pt">+${r.pts}</div></div>`
+  ).join("");
+  show("screen-results");
+}
+
+/* ============ BASKET MODE: guess the total ============ */
+const BASKET_ROUNDS=5;
+function startBasket(opts={}){
+  const seed = opts.seed ?? (Math.random()*1e9|0);
+  const rng=mulberry32(seed);
+  const pool=pickItems(activePool().length,rng,activePool());
+  const baskets=[]; let i=0;
+  while(baskets.length<BASKET_ROUNDS && i<pool.length){
+    const size=2+Math.floor(rng()*3); // 2-4 products
+    const items=pool.slice(i,i+size);
+    if(items.length>=2) baskets.push(items);
+    i+=size;
+  }
+  state={mode:"basket",baskets,total:baskets.length,seed,round:0,score:0,combo:0,maxCombo:0,results:[],input:"",timer:null,locked:false,challengeTarget:(opts.target??null)};
+  hideBanner();
+  show("screen-basket");
+  loadBasket();
+}
+async function loadBasket(){
+  const beginRound=state.round;
+  const beginMode=state.mode;
+  const items=state.baskets[state.round];
+  state.input=""; state.locked=true;
+  showPrep(true);
+  await waitForImages(items.map(x=>x.img));
+  if(state.round!==beginRound || state.mode!==beginMode) return;
+  showPrep(false);
+  $("b-round").textContent="Mandje "+(state.round+1)+"/"+state.total;
+  $("b-score").textContent=state.score;
+  $("b-combo").textContent=state.combo>=2 ? "🔥 x"+comboMult(state.combo).toFixed(1) : "";
+  $("b-reveal").classList.remove("show");
+  $("basket-grid").innerHTML=items.map(it=>`<div class="basket-item"><img src="${it.img}" alt="${it.n}"><div class="nm">${it.n}</div></div>`).join("");
+  updateBasketDisplay();
+  state.locked=false;
+  startBasketTimer();
+  const next=state.baskets[state.round+1]; if(next) next.forEach(it=>preloadImg(it.img));
+}
+function startBasketTimer(){
+  const bar=$("b-timer"); bar.style.transition="none"; bar.style.transform="scaleX(1)";
+  state.qStart=performance.now(); state._lastTick=99;
+  clearInterval(state.timer);
+  state.timer=setInterval(()=>{
+    const el=(performance.now()-state.qStart)/1000;
+    bar.style.transform="scaleX("+Math.max(0,1-el/ROUND_TIME)+")";
+    const sec=Math.ceil(ROUND_TIME-el);
+    if(sec<=3 && sec>=1 && sec!==state._lastTick){ state._lastTick=sec; sfx.tick(); haptic(7); }
+    if(el>=ROUND_TIME){clearInterval(state.timer);submitBasket(true);}
+  },50);
+}
+function updateBasketDisplay(){
+  const cents=state.input===""?0:parseInt(state.input,10);
+  $("b-disp-val").textContent=(cents/100).toFixed(2).replace(".",",");
+  $("b-display").classList.toggle("blink",state.input==="");
+}
+function pressBasketKey(k){
+  if(state.locked)return;
+  if(k==="del")state.input=state.input.slice(0,-1);
+  else if(k==="clr")state.input="";
+  else if(/\d/.test(k) && state.input.length<6)state.input+=k;
+  sfx.click(); haptic(6); updateBasketDisplay();
+}
+function submitBasket(timeout){
+  if(state.locked)return;
+  state.locked=true; clearInterval(state.timer);
+  const items=state.baskets[state.round];
+  const actual=items.reduce((sum,it)=>sum+it.p,0);
+  const guess=state.input===""?0:parseInt(state.input,10)/100;
+  const diff=Math.abs(guess-actual);
+  const exact=diff<0.005;
+  let pts=Math.max(0,1500-Math.round(diff*700));
+  if(exact)pts+=500;
+  if(diff<=0.75){state.combo++;}else{state.combo=0;}
+  state.maxCombo=Math.max(state.maxCombo,state.combo);
+  pts=Math.round(pts*comboMult(state.combo));
+  if(timeout && state.input==="") pts=0;
+  state.score+=pts;
+  const verdict = timeout&&state.input==="" ? "⏰ Mandje gemist!" : exact ? "🎯 Perfect mandje!" : diff<=0.75 ? "🧺 Lekker dichtbij!" : "😬 Kassabon klopt niet";
+  const vcolor = diff<=0.75 && !(timeout&&state.input==="") ? "var(--good)" : "var(--bad)";
+  if(diff<=0.75 && !(timeout&&state.input==="")){ sfx.good(); haptic(20); } else { sfx.bad(); haptic(40); }
+  state.results.push({items,guess,actual,diff,exact,timeout:timeout&&state.input==="",pts,right:diff<=0.75});
+  $("b-verdict").textContent=verdict; $("b-verdict").style.color=vcolor;
+  $("b-delta").textContent = timeout&&state.input==="" ? "Geen totaal ingevuld" : (guess>actual ? fmt(guess-actual)+" te duur" : fmt(actual-guess)+" te goedkoop");
+  $("b-guess").textContent=fmt(guess); $("b-actual").textContent=fmt(actual);
+  $("b-pts").textContent="+"+pts+" punten"+(state.combo>=2?"  🔥x"+comboMult(state.combo).toFixed(1):"");
+  $("b-score").textContent=state.score;
+  $("b-next").textContent=(state.round>=state.total-1)?"Resultaat →":"Volgende →";
+  $("b-reveal").classList.add("show");
+}
+function nextBasket(){
+  if(state.round>=state.total-1){endBasket();return;}
+  state.round++; loadBasket();
+}
+function endBasket(){
+  const s=recordScore("basket",state.score); store.set(s);
+  const good=state.results.filter(r=>r.right).length;
+  $("res-mode").textContent="Mandje Modus · "+good+"/"+state.total+" dichtbij";
+  $("res-score").textContent=state.score;
+  const rank=[...RANKS].reverse().find(r=>state.score>=r.min)||RANKS[0];
+  $("res-rank").textContent=rank.t;
+  showChallengeOutcome();
+  polishResults("Mandje Modus", good+"/"+state.total+" mandjes");
+  $("res-grid").textContent=state.results.map(r=>r.timeout?"⬛":(r.exact?"🟨":(r.right?"🟩":"🟥"))).join("");
+  $("res-breakdown").innerHTML=state.results.map((r,i)=>
+    `<div class="row"><div class="nm">🧺 Mandje ${i+1} (${r.items.length} items) · ${fmt(r.actual)}</div><div class="pt" style="color:${r.right?'var(--good)':'var(--bad)'}">${r.right?'+'+r.pts:'✗'}</div></div>`
+  ).join("");
+  show("screen-results");
+}
+
+/* ============ FIVE EURO MATCH: Tinder-like under/over ============ */
+const FIVE_ROUNDS=10;
+function startFive(opts={}){
+  const seed=opts.seed ?? (Math.random()*1e9|0);
+  const rng=mulberry32(seed);
+  const pool=pickItems(activePool().length,rng,activePool());
+  const rounds=[]; let i=0;
+  while(rounds.length<FIVE_ROUNDS && i<pool.length){
+    const size=rng()<0.7 ? 1 : (2+Math.floor(rng()*2)); // mostly one product, sometimes 2-3
+    const items=pool.slice(i,i+size);
+    if(items.length) rounds.push(items);
+    i+=size;
+  }
+  state={mode:"five",rounds,total:rounds.length,seed,round:0,score:0,combo:0,maxCombo:0,results:[],locked:false,timer:null,qStart:0,challengeTarget:(opts.target??null)};
+  hideBanner();
+  show("screen-five");
+  loadFive();
+}
+async function loadFive(){
+  const beginRound=state.round;
+  const beginMode=state.mode;
+  const items=state.rounds[state.round];
+  state.locked=true;
+  showPrep(true);
+  await waitForImages(items.map(x=>x.img));
+  if(state.round!==beginRound || state.mode!==beginMode) return;
+  showPrep(false);
+  $("f-round").textContent="Match "+(state.round+1)+"/"+state.total;
+  $("f-score").textContent=state.score;
+  $("f-combo").textContent=state.combo>=2 ? "🔥 x"+comboMult(state.combo).toFixed(1) : "";
+  $("f-verdict").textContent=""; $("f-price").textContent="";
+  $("f-next").style.display="none";
+  $("five-choices").style.display="grid";
+  const stack=$("five-stack");
+  stack.className="swipe-stack"+(items.length>1?" multi":"");
+  stack.innerHTML=items.map(it=>`<div class="swipe-item"><img src="${it.img}" alt="${it.n}"><div class="nm">${it.n}</div></div>`).join("");
+  state.locked=false;
+  startFiveTimer();
+  const next=state.rounds[state.round+1]; if(next) next.forEach(it=>preloadImg(it.img));
+}
+function startFiveTimer(){
+  const bar=$("f-timer"); bar.style.transition="none"; bar.style.transform="scaleX(1)";
+  state.qStart=performance.now();
+  clearInterval(state.timer);
+  state.timer=setInterval(()=>{
+    const el=(performance.now()-state.qStart)/1000;
+    bar.style.transform="scaleX("+Math.max(0,1-el/7)+")";
+    if(el>=7){clearInterval(state.timer);chooseFive(null);}
+  },50);
+}
+function chooseFive(choice){
+  if(state.locked)return;
+  state.locked=true; clearInterval(state.timer);
+  const items=state.rounds[state.round];
+  const total=items.reduce((s,it)=>s+it.p,0);
+  const over=total>=5;
+  const right=(choice==="over"&&over)||(choice==="under"&&!over);
+  const elapsed=(performance.now()-state.qStart)/1000;
+  let pts=0;
+  if(right){
+    const speed=Math.round(250*Math.max(0,1-elapsed/7));
+    state.combo++; state.maxCombo=Math.max(state.maxCombo,state.combo);
+    pts=Math.round((450+speed)*comboMult(state.combo));
+  } else { state.combo=0; }
+  state.score+=pts;
+  if(right){ sfx.good(); haptic(20); } else { sfx.bad(); haptic(40); }
+  state.results.push({items,total,choice,right,pts});
+  $("f-score").textContent=state.score;
+  $("five-choices").style.display="none";
+  $("f-verdict").textContent = choice==null ? "⏰ Geen match!" : right ? "💘 Match! +"+pts : "💔 Nope!";
+  $("f-verdict").style.color = right ? "var(--good)" : "var(--bad)";
+  $("f-price").textContent="Totaal: "+fmt(total)+" · "+(over?"boven €5":"onder €5");
+  $("f-next").textContent=(state.round>=state.total-1)?"Resultaat →":"Volgende →";
+  $("f-next").style.display="inline-block";
+}
+function nextFive(){
+  if(state.round>=state.total-1){endFive();return;}
+  state.round++; loadFive();
+}
+function endFive(){
+  const s=recordScore("five",state.score); store.set(s);
+  const good=state.results.filter(r=>r.right).length;
+  $("res-mode").textContent="€5 Match · "+good+"/"+state.total+" goed";
+  $("res-score").textContent=state.score;
+  const rank=[...RANKS].reverse().find(r=>state.score>=r.min)||RANKS[0];
+  $("res-rank").textContent=rank.t;
+  showChallengeOutcome();
+  polishResults("€5 Match", good+"/"+state.total+" matches");
+  $("res-grid").textContent=state.results.map(r=>r.choice==null?"⬛":(r.right?"🟩":"🟥")).join("");
+  $("res-breakdown").innerHTML=state.results.map((r,i)=>
+    `<div class="row"><div class="nm">${r.total>=5?'⬆️':'⬇️'} Match ${i+1} · ${fmt(r.total)} (${r.items.length} item${r.items.length>1?'s':''})</div><div class="pt" style="color:${r.right?'var(--good)':'var(--bad)'}">${r.right?'+'+r.pts:'✗'}</div></div>`
   ).join("");
   show("screen-results");
 }
@@ -843,12 +1196,13 @@ function buildPairs(n,rng){
 
 function loadDuel(){
   const beginRound=state.round;
+  const beginMode=state.mode;
   const [a,b]=state.pairs[state.round];
   state.locked=true;
   // only render this duel once BOTH photos are fully ready
   showPrep(true);
   waitForImages([a.img,b.img]).then(()=>{
-    if(state.round!==beginRound) return;   // navigated away
+    if(state.round!==beginRound || state.mode!==beginMode) return;   // navigated away
     showPrep(false);
     renderDuel(a,b);
   });
@@ -933,6 +1287,7 @@ function endDuel(){
   const rank=[...RANKS].reverse().find(r=>state.score>=r.min)||RANKS[0];
   $("res-rank").textContent=rank.t;
   showChallengeOutcome();
+  polishResults("Hoger of Lager", correct+"/"+state.total+" goed");
   $("res-grid").textContent=state.results.map(r=>r.right?"🟩":(r.picked<0?"⬛":"🟥")).join("");
   $("res-breakdown").innerHTML=state.results.map(r=>{
     const win=r.correctSide===0?r.a:r.b;
@@ -941,6 +1296,15 @@ function endDuel(){
   show("screen-results");
 }
 function shareText(){
+  if(state.mode==="basket"){
+    const grid=state.results.map(r=>r.timeout?"⬛":(r.exact?"🟨":(r.right?"🟩":"🟥"))).join("");
+    return `Prijspaniek 🛒 · Mandje Modus\nScore: ${state.score}\n${grid}\nSpeel mee: graafg.github.io/prijspaniek`;
+  }
+  if(state.mode==="five"){
+    const grid=state.results.map(r=>r.choice==null?"⬛":(r.right?"🟩":"🟥")).join("");
+    const good=state.results.filter(r=>r.right).length;
+    return `Prijspaniek 🛒 · €5 Match\nScore: ${state.score} (${good}/${state.total})\n${grid}\nSpeel mee: graafg.github.io/prijspaniek`;
+  }
   if(state.mode==="duel"){
     const grid=state.results.map(r=>r.right?"🟩":(r.picked<0?"⬛":"🟥")).join("");
     const correct=state.results.filter(r=>r.right).length;
@@ -992,6 +1356,8 @@ function hideBanner(){ $("challenge-banner").classList.remove("show"); }
 function startChallenge(ch){
   if(!ch) return;
   if(ch.mode==="duel") startDuel({seed:ch.seed,target:ch.target});
+  else if(ch.mode==="basket") startBasket({seed:ch.seed,target:ch.target});
+  else if(ch.mode==="five") startFive({seed:ch.seed,target:ch.target});
   else startGame(ch.mode==="sudden"?"quick":ch.mode, {seed:ch.seed,target:ch.target});
 }
 function parseChallenge(){
@@ -1042,7 +1408,10 @@ function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");cle
 document.querySelectorAll(".mode-btn").forEach(b=>b.addEventListener("click",()=>{
   ac(); // unlock audio on first gesture
   const m=b.dataset.mode;
-  if(m==="duel")startDuel(); else startGame(m);
+  if(m==="duel")startDuel();
+  else if(m==="basket")startBasket();
+  else if(m==="five")startFive();
+  else startGame(m);
 }));
 $("sound-btn").addEventListener("click",()=>{ ac(); setSound(!settings.sound); });
 document.querySelectorAll("#diff-seg button").forEach(b=>b.addEventListener("click",()=>{ setDifficulty(b.dataset.diff); sfx.click(); }));
@@ -1052,13 +1421,31 @@ $("challenge-banner").addEventListener("click",()=>{ ac(); startChallenge(pendin
 $("keypad").addEventListener("click",e=>{const k=e.target.closest(".key");if(k)pressKey(k.dataset.k);});
 $("submit-btn").addEventListener("click",()=>submitGuess(false));
 $("next-btn").addEventListener("click",nextRound);
+$("b-keypad").addEventListener("click",e=>{const k=e.target.closest(".key");if(k)pressBasketKey(k.dataset.k);});
+$("b-submit").addEventListener("click",()=>submitBasket(false));
+$("b-next").addEventListener("click",nextBasket);
+$("f-under").addEventListener("click",()=>chooseFive("under"));
+$("f-over").addEventListener("click",()=>chooseFive("over"));
+$("f-next").addEventListener("click",nextFive);
 $("share-btn").addEventListener("click",doShare);
-$("again-btn").addEventListener("click",()=>{ state.mode==="duel"?startDuel():startGame(state.mode); });
+$("again-btn").addEventListener("click",()=>{ state.mode==="duel"?startDuel():state.mode==="basket"?startBasket():state.mode==="five"?startFive():startGame(state.mode); });
 $("home-link").addEventListener("click",e=>{e.preventDefault();refreshStats();show("screen-start");});
 $("dcard-0").addEventListener("click",()=>chooseDuel(0));
 $("dcard-1").addEventListener("click",()=>chooseDuel(1));
 $("d-next").addEventListener("click",nextDuel);
 document.addEventListener("keydown",e=>{
+  if($("screen-five").classList.contains("active")){
+    if(e.key==="ArrowLeft"||e.key==="1")chooseFive("under");
+    else if(e.key==="ArrowRight"||e.key==="2")chooseFive("over");
+    else if(e.key==="Enter" && $("f-next").style.display!=="none")nextFive();
+    return;
+  }
+  if($("screen-basket").classList.contains("active")){
+    if(e.key>="0"&&e.key<="9")pressBasketKey(e.key);
+    else if(e.key==="Backspace")pressBasketKey("del");
+    else if(e.key==="Enter"){ $("b-reveal").classList.contains("show")?nextBasket():submitBasket(false); }
+    return;
+  }
   if($("screen-duel").classList.contains("active")){
     if(e.key==="1"||e.key==="ArrowLeft")chooseDuel(0);
     else if(e.key==="2"||e.key==="ArrowRight")chooseDuel(1);
@@ -1095,10 +1482,12 @@ if("serviceWorker" in navigator){
   window.addEventListener("load",()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); });
 }
 
-/* deep-link from manifest shortcuts: ?mode=daily|quick|sudden|duel */
+/* deep-link from manifest shortcuts: ?mode=daily|quick|sudden|duel|basket|five */
 (function(){
   const m=new URLSearchParams(location.search).get("mode");
   if(m==="duel")startDuel();
+  else if(m==="basket")startBasket();
+  else if(m==="five")startFive();
   else if(["daily","quick","sudden"].includes(m))startGame(m);
 })();
 </script>
