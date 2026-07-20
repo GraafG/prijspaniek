@@ -796,7 +796,7 @@
 "name": "Cokoc chocolade gummies",
 "desc": "90 gram | diverse varianten",
 "brand": "Cokoc",
-"cat": "Snoep",
+"cat": "Chocolade",
 "price": 1.39,
 "original": null,
 "isDeal": false,
@@ -936,6 +936,18 @@
 "href": "https://www.action.com/nl-nl/p/3228492/venco-jubes/"
 },
 {
+"code": "3228491",
+"name": "Venco Boerderijdrop",
+"desc": "225 gram",
+"brand": "Venco",
+"cat": "Snoep",
+"price": 1.79,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3228491_8714200219613-111_01_vybf8r",
+"href": "https://www.action.com/nl-nl/p/3228491/venco-boerderijdrop/"
+},
+{
 "code": "3228490",
 "name": "Venco Honingdrop",
 "desc": "225 gram",
@@ -982,6 +994,30 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3228467_8713800255304-111_01_kzsqq5",
 "href": "https://www.action.com/nl-nl/p/3228467/redband-duo-winegums-zoet-zuur/"
+},
+{
+"code": "3228459",
+"name": "Venco Droptoppers",
+"desc": "205 gram",
+"brand": "Venco",
+"cat": "Snoep",
+"price": 1.79,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3228459_8713800143151-111_01_ujqtxs",
+"href": "https://www.action.com/nl-nl/p/3228459/venco-droptoppers/"
+},
+{
+"code": "3228458",
+"name": "Venco Droptoppers Zacht & Zoet",
+"desc": "215 gram",
+"brand": "Venco",
+"cat": "Snoep",
+"price": 1.79,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3228458_8714200219484-111_01_viewym",
+"href": "https://www.action.com/nl-nl/p/3228458/venco-droptoppers-zacht-zoet/"
 },
 {
 "code": "3228457",
@@ -1102,30 +1138,6 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3225705_4070455810130-111_01_mpgwss",
 "href": "https://www.action.com/nl-nl/p/3225705/trolli-gummi-world-zoet-zuur/"
-},
-{
-"code": "3225164",
-"name": "Cokoc gummies Gebakken Eitjes",
-"desc": "4 stuks",
-"brand": "Cokoc",
-"cat": "Snoep",
-"price": 0.99,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3225164_6972007904589-111_01_zh91za",
-"href": "https://www.action.com/nl-nl/p/3225164/cokoc-gummies-gebakken-eitjes/"
-},
-{
-"code": "3224079",
-"name": "Amos fruitgummies",
-"desc": "65 gram | diverse varianten",
-"brand": "Amos",
-"cat": "Snoep",
-"price": 0.99,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3224079_8710998536345-111_01_jfklox",
-"href": "https://www.action.com/nl-nl/p/3224079/amos-fruitgummies/"
 },
 {
 "code": "3223314",
@@ -2907,7 +2919,7 @@
 "code": "3219161",
 "name": "LEGO Minecraft De lavastrijd in de Nether",
 "desc": "LEGO-nr. 21266",
-"brand": "",
+"brand": "LEGO",
 "cat": "Speelgoed",
 "price": 7.95,
 "original": null,
@@ -3961,7 +3973,7 @@
 },
 {
 "code": "3224696",
-"name": "MasterChef mini hakmolen",
+"name": "MasterChef draadloze mini hakmolen Ribello",
 "desc": "Ø 8,5 x 12 cm",
 "brand": "",
 "cat": "Keuken",
@@ -3969,7 +3981,7 @@
 "original": null,
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3224696_8721335813081-110_01_mt2c3l",
-"href": "https://www.action.com/nl-nl/p/3224696/masterchef-mini-hakmolen/"
+"href": "https://www.action.com/nl-nl/p/3224696/masterchef-draadloze-mini-hakmolen-ribello/"
 },
 {
 "code": "3222537",
@@ -4441,7 +4453,7 @@
 },
 {
 "code": "3222908",
-"name": "Philips Alkaline power plus batterijen C",
+"name": "Philips batterijen C",
 "desc": "2 stuks",
 "brand": "Philips",
 "cat": "Multimedia",
@@ -4449,7 +4461,7 @@
 "original": 1.79,
 "isDeal": true,
 "image": "https://asset.action.com/image/upload/3222908_4895229174764-111_01_e4oweh",
-"href": "https://www.action.com/nl-nl/p/3222908/philips-alkaline-power-plus-batterijen-c/"
+"href": "https://www.action.com/nl-nl/p/3222908/philips-batterijen-c/"
 },
 {
 "code": "3222907",
@@ -4752,18 +4764,6 @@
 "href": "https://www.action.com/nl-nl/p/3004694/bidon/"
 },
 {
-"code": "3225145",
-"name": "Reese's whey proteïnepoeder Chocolade & Pindakaas",
-"desc": "481 gram",
-"brand": "",
-"cat": "Sport",
-"price": 14.99,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3225145_5056569902588-111_01_o4layw",
-"href": "https://www.action.com/nl-nl/p/3225145/reese-s-whey-proteinepoeder-chocolade-pindakaas/"
-},
-{
 "code": "3223809",
 "name": "433 energiereep",
 "desc": "50 gram | diverse varianten",
@@ -4813,7 +4813,7 @@
 },
 {
 "code": "3223160",
-"name": "XL tennisbal",
+"name": "Mega tennisbal",
 "desc": "Ø 23,5 cm | maat 7",
 "brand": "",
 "cat": "Sport",
@@ -4821,7 +4821,7 @@
 "original": null,
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3223160_8711292213840-111_01_fu6gku",
-"href": "https://www.action.com/nl-nl/p/3223160/xl-tennisbal/"
+"href": "https://www.action.com/nl-nl/p/3223160/mega-tennisbal/"
 },
 {
 "code": "3223065",
@@ -4918,5 +4918,17 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3222464_8719979204877-111_01_kem8gf",
 "href": "https://www.action.com/nl-nl/p/3222464/accelerate-eiwitreep-aardbei/"
+},
+{
+"code": "3222271",
+"name": "Umbro sport tech broek",
+"desc": "Maten M-XL | diverse kleuren",
+"brand": "Umbro",
+"cat": "Sport",
+"price": 12.95,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3222271_8718633049434-110_01_rgfaui",
+"href": "https://www.action.com/nl-nl/p/3222271/umbro-sport-tech-broek/"
 }
 ]
