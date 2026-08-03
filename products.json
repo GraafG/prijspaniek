@@ -881,9 +881,9 @@
 "desc": "1 kg",
 "brand": "Trolli",
 "cat": "Snoep",
-"price": 3.33,
-"original": 4.99,
-"isDeal": true,
+"price": 4.99,
+"original": null,
+"isDeal": false,
 "image": "https://asset.action.com/image/upload/20606628",
 "href": "https://www.action.com/nl-nl/p/2546802/trolli-number-1/"
 },
@@ -3353,9 +3353,9 @@
 "desc": "7 standen",
 "brand": "",
 "cat": "Tuin",
-"price": 29.95,
-"original": 39.95,
-"isDeal": true,
+"price": 39.95,
+"original": null,
+"isDeal": false,
 "image": "https://asset.action.com/image/upload/3221943_8718964272846-110_02_g7uaet",
 "href": "https://www.action.com/nl-nl/p/3221943/tuinstoel/"
 },
@@ -4260,6 +4260,18 @@
 "href": "https://www.action.com/nl-nl/p/3225026/agenda-2027/"
 },
 {
+"code": "3225013",
+"name": "Fichero thermisch printpapier",
+"desc": "Diverse varianten",
+"brand": "",
+"cat": "Kantoor",
+"price": 4.95,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3225013_8711568152408-111_01_o8xh59",
+"href": "https://www.action.com/nl-nl/p/3225013/fichero-thermisch-printpapier/"
+},
+{
 "code": "3223751",
 "name": "Agenda 2027",
 "desc": "Diverse kleuren",
@@ -4378,18 +4390,6 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3225927_5904017462408-111_01_fxkbje",
 "href": "https://www.action.com/nl-nl/p/3225927/oxford-notitieboek-b5/"
-},
-{
-"code": "3225013",
-"name": "Fichero thermisch printpapier",
-"desc": "Diverse varianten",
-"brand": "",
-"cat": "Kantoor",
-"price": 4.95,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3225013_8711568152408-111_01_o8xh59",
-"href": "https://www.action.com/nl-nl/p/3225013/fichero-thermisch-printpapier/"
 },
 {
 "code": "3225003",
