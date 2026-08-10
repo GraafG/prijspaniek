@@ -5,9 +5,9 @@
 "desc": "72-delig",
 "brand": "Werckmann",
 "cat": "Gereedschap",
-"price": 19.95,
-"original": 29.95,
-"isDeal": true,
+"price": 29.95,
+"original": null,
+"isDeal": false,
 "image": "https://asset.action.com/image/upload/3218578_8718964255382-110_01_koowhz",
 "href": "https://www.action.com/nl-nl/p/3218578/werckmann-gereedschapset/"
 },
@@ -2496,18 +2496,6 @@
 "href": "https://www.action.com/nl-nl/p/3221755/gevlochten-mand/"
 },
 {
-"code": "3221722",
-"name": "Kapstok",
-"desc": "28 x 25 cm",
-"brand": "",
-"cat": "Opbergen",
-"price": 3.99,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3221722_5714988086080-111_01_qtyn1v",
-"href": "https://www.action.com/nl-nl/p/3221722/kapstok/"
-},
-{
 "code": "3221087",
 "name": "Opbergdoos",
 "desc": "10 x 10 x 8,5 cm | diverse varianten",
@@ -2530,6 +2518,18 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3221019_8718964268825-110_01_f853z0",
 "href": "https://www.action.com/nl-nl/p/3221019/xl-make-up-organizer/"
+},
+{
+"code": "3220810",
+"name": "Opvouwbare mand",
+"desc": "30 x 30 cm | diverse varianten",
+"brand": "",
+"cat": "Opbergen",
+"price": 2.99,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3220810_5063457063665-110_01_uamhw9",
+"href": "https://www.action.com/nl-nl/p/3220810/opvouwbare-mand/"
 },
 {
 "code": "3208551",
@@ -2729,9 +2729,9 @@
 "desc": "5-delig",
 "brand": "",
 "cat": "Verzorging",
-"price": 7.99,
-"original": 9.95,
-"isDeal": true,
+"price": 9.95,
+"original": null,
+"isDeal": false,
 "image": "https://asset.action.com/image/upload/3009731_8711568064404-111_01_e1vawl",
 "href": "https://www.action.com/nl-nl/p/3009731/optismile-elektrische-tandenborstel/"
 },
@@ -4205,9 +4205,9 @@
 "desc": "500 vel",
 "brand": "",
 "cat": "Kantoor",
-"price": 2.49,
-"original": 2.69,
-"isDeal": true,
+"price": 2.69,
+"original": null,
+"isDeal": false,
 "image": "https://asset.action.com/image/upload/3014741_4250593403078-111_01_jwb7ua",
 "href": "https://www.action.com/nl-nl/p/3014741/kopieer-en-printpapier-a4/"
 },
