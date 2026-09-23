@@ -46,6 +46,18 @@ python -m http.server 8731
 # open http://localhost:8731/
 ```
 
+## Python-validatie
+
+Pull requests draaien een aparte, alleen-lezen workflow met Python 3.12, net als
+de dagelijkse dataworkflow. Deze controleert de syntax en test de parser met
+offline fixtures, zonder te scrapen, datasets te wijzigen of te publiceren.
+Dependency-caching staat uit: de scraper en tests gebruiken alleen de standaardbibliotheek.
+
+```bash
+python -m py_compile scrape.py make_icons.py
+python -m unittest discover -s tests -v
+```
+
 ## Stack
 
 Pure HTML/CSS/vanilla JS — geen build, geen dependencies. Hosting via GitHub Pages.
