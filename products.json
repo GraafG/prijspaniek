@@ -3348,6 +3348,18 @@
 "href": "https://www.action.com/nl-nl/p/3225116/decoratieve-schaal/"
 },
 {
+"code": "3225086",
+"name": "Verduisterend gordijn Julles",
+"desc": "140 x 260 cm | diverse kleuren",
+"brand": "",
+"cat": "Wonen",
+"price": 11.95,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3225086_8718858317950-111_01_rk8umg",
+"href": "https://www.action.com/nl-nl/p/3225086/verduisterend-gordijn-julles/"
+},
+{
 "code": "3225022",
 "name": "Kunstorchidee in pot",
 "desc": "18 x 34 x 51 cm | diverse kleuren",
@@ -3394,18 +3406,6 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3224328_5714988103244-110_03_q2bxao",
 "href": "https://www.action.com/nl-nl/p/3224328/digitale-wandklok/"
-},
-{
-"code": "3224011",
-"name": "Pompoen kussen",
-"desc": "Ø 32 x 23 cm | diverse kleuren",
-"brand": "",
-"cat": "Wonen",
-"price": 4.95,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3224011_8718964286829-111_01_ll0hbl",
-"href": "https://www.action.com/nl-nl/p/3224011/pompoen-kussen/"
 },
 {
 "code": "3224739",
@@ -4284,6 +4284,18 @@
 "href": "https://www.action.com/nl-nl/p/3215382/fluffy-notitieboek-a5/"
 },
 {
+"code": "3206987",
+"name": "Luxe drinkfles",
+"desc": "300 ml | diverse varianten",
+"brand": "Disney",
+"cat": "Kantoor",
+"price": 3.99,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3206987_8721246993667-110_02_nl9rs9",
+"href": "https://www.action.com/nl-nl/p/3206987/luxe-drinkfles/"
+},
+{
 "code": "3201366",
 "name": "DécoTime glitter- en foliepapierblok A5",
 "desc": "24 vel | diverse varianten",
@@ -4452,18 +4464,6 @@
 "href": "https://www.action.com/nl-nl/p/3224834/documentenmappen/"
 },
 {
-"code": "3224618",
-"name": "Exacompta documentenmap",
-"desc": "Diverse kleuren",
-"brand": "Exacompta",
-"cat": "Kantoor",
-"price": 1.99,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3224618_3130633521201-111_01_buxz9b",
-"href": "https://www.action.com/nl-nl/p/3224618/exacompta-documentenmap/"
-},
-{
 "code": "3216797",
 "name": "A-Force batterijen AA",
 "desc": "20 stuks",
@@ -4560,6 +4560,30 @@
 "href": "https://www.action.com/nl-nl/p/3215182/styluspen-voor-kinderen/"
 },
 {
+"code": "3224360",
+"name": "Lab31 laptopstandaard",
+"desc": "Diverse kleuren",
+"brand": "Lab31",
+"cat": "Multimedia",
+"price": 1.89,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3224360_8715342057736-111_01_ximiws",
+"href": "https://www.action.com/nl-nl/p/3224360/lab31-laptopstandaard/"
+},
+{
+"code": "3224359",
+"name": "Sologic draadloze ergonomische muis",
+"desc": "2-delig",
+"brand": "Sologic",
+"cat": "Multimedia",
+"price": 5.95,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3224359_8715342058023-110_01_ptmio7",
+"href": "https://www.action.com/nl-nl/p/3224359/sologic-draadloze-ergonomische-muis/"
+},
+{
 "code": "3223494",
 "name": "Re-load 5-in-1 autolader",
 "desc": "75 watt",
@@ -4618,6 +4642,18 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3211619_8720249812692-110_03_gwmvln",
 "href": "https://www.action.com/nl-nl/p/3211619/fresh-n-rebel-draadloze-oordopjes/"
+},
+{
+"code": "3011811",
+"name": "Lab31 muismat",
+"desc": "90 x 40 cm",
+"brand": "Lab31",
+"cat": "Multimedia",
+"price": 3.99,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3011811_8715342048802-110_01_mb67qm",
+"href": "https://www.action.com/nl-nl/p/3011811/lab31-muismat/"
 },
 {
 "code": "3003292",
@@ -4690,42 +4726,6 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3225147_4891199243493-111_01_gegir7",
 "href": "https://www.action.com/nl-nl/p/3225147/gp-oplaadbare-batterijen-aa/"
-},
-{
-"code": "3225146",
-"name": "GP oplaadbare batterijen AAA",
-"desc": "4 stuks | 950 mAh",
-"brand": "GP",
-"cat": "Multimedia",
-"price": 3.99,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3225146_4891199243486-111_01_lee1tv",
-"href": "https://www.action.com/nl-nl/p/3225146/gp-oplaadbare-batterijen-aaa/"
-},
-{
-"code": "3224689",
-"name": "A-Force batterijen AA",
-"desc": "12 stuks",
-"brand": "A-Force",
-"cat": "Multimedia",
-"price": 1.89,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3224689_8718964322534-111_01_vdhcif",
-"href": "https://www.action.com/nl-nl/p/3224689/a-force-batterijen-aa/"
-},
-{
-"code": "3224688",
-"name": "A-Force batterijen AAA",
-"desc": "12 stuks",
-"brand": "A-Force",
-"cat": "Multimedia",
-"price": 1.89,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3224688_8718964322541-111_01_konc4x",
-"href": "https://www.action.com/nl-nl/p/3224688/a-force-batterijen-aaa/"
 },
 {
 "code": "3225587",
