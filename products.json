@@ -324,6 +324,18 @@
 "href": "https://www.action.com/nl-nl/p/3225778/lsc-smart-connect-slimme-rgb-ledstrip/"
 },
 {
+"code": "3225770",
+"name": "Smart ledstrip",
+"desc": "4 x 50 cm",
+"brand": "",
+"cat": "Verlichting",
+"price": 12.95,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3225770_8712879170327-111_01_cp0uzj",
+"href": "https://www.action.com/nl-nl/p/3225770/smart-ledstrip/"
+},
+{
 "code": "3225301",
 "name": "Kerstfiguur met infinity ledverlichting",
 "desc": "27 cm | diverse varianten",
@@ -564,18 +576,6 @@
 "href": "https://www.action.com/nl-nl/p/3224086/grundig-ledlamp-met-statief/"
 },
 {
-"code": "3223831",
-"name": "Paddenstoel met ledverlichting",
-"desc": "9 x 9,5 cm | diverse kleuren",
-"brand": "",
-"cat": "Verlichting",
-"price": 1.99,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3223831_4007698041779-111_01_mzqe1e",
-"href": "https://www.action.com/nl-nl/p/3223831/paddenstoel-met-ledverlichting/"
-},
-{
 "code": "3219596",
 "name": "Sunrice Original 2.0",
 "desc": "150 gram",
@@ -732,18 +732,6 @@
 "href": "https://www.action.com/nl-nl/p/3227813/snickers/"
 },
 {
-"code": "3227778",
-"name": "Damak baklava",
-"desc": "60 gram",
-"brand": "Nestlé",
-"cat": "Chocolade",
-"price": 0.99,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3227778_8445291884588-111_01_xvol5j",
-"href": "https://www.action.com/nl-nl/p/3227778/damak-baklava/"
-},
-{
 "code": "3227662",
 "name": "Hershey's Cookies 'N' Creme Flat White",
 "desc": "90 gram",
@@ -862,6 +850,18 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3226195_8445291079908-111_01_ldsz23",
 "href": "https://www.action.com/nl-nl/p/3226195/kitkat-white-mini/"
+},
+{
+"code": "3226063",
+"name": "Reese's Pieces",
+"desc": "90 gram",
+"brand": "Reese's",
+"cat": "Chocolade",
+"price": 0.99,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3226063_753854584140-111_01_toteu5",
+"href": "https://www.action.com/nl-nl/p/3226063/reese-s-pieces/"
 },
 {
 "code": "3226222",
@@ -1108,7 +1108,7 @@
 "name": "Smikkelhuys strooigoed",
 "desc": "1 kilo",
 "brand": "Smikkelhuys",
-"cat": "Snoep",
+"cat": "Koek",
 "price": 3.99,
 "original": null,
 "isDeal": false,
@@ -1716,18 +1716,6 @@
 "href": "https://www.action.com/nl-nl/p/3223957/tokimeki-panda-koekjes-matcha/"
 },
 {
-"code": "3223906",
-"name": "Q-Brand Mochi mico mochi Matcha",
-"desc": "80 gram",
-"brand": "Q-Brand Mochi",
-"cat": "Koek",
-"price": 1.39,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3223906_4711931032461-111_01_nobtrb",
-"href": "https://www.action.com/nl-nl/p/3223906/q-brand-mochi-mico-mochi-matcha/"
-},
-{
 "code": "3013602",
 "name": "Pure Ceylon thee giftbox",
 "desc": "24 theezakjes | 36 gram",
@@ -2012,7 +2000,7 @@
 "price": 0.99,
 "original": null,
 "isDeal": false,
-"image": "https://asset.action.com/image/upload/22695471",
+"image": "https://asset.action.com/image/upload/3207443_3124480167057-111_01_lldjmu",
 "href": "https://www.action.com/nl-nl/p/3207443/oasis-tropical/"
 },
 {
@@ -2588,7 +2576,7 @@
 "price": 0.85,
 "original": 0.95,
 "isDeal": true,
-"image": "https://asset.action.com/image/upload/3227332_5902815141099-111_01_ns6k2p",
+"image": "https://asset.action.com/image/upload/3227332_5902815141112-111_01_brfsxp",
 "href": "https://www.action.com/nl-nl/p/3227332/revers-handcreme/"
 },
 {
@@ -4016,7 +4004,7 @@
 "price": 2.99,
 "original": 3.99,
 "isDeal": true,
-"image": "https://asset.action.com/image/upload/3215179_8718964303847-110_01_edcvht",
+"image": "https://asset.action.com/image/upload/3215179_8718964303847-110_01_hmn22u",
 "href": "https://www.action.com/nl-nl/p/3215179/theedoekenset/"
 },
 {
@@ -4812,6 +4800,18 @@
 "href": "https://www.action.com/nl-nl/p/3224862/dames-thermo-longsleeve-rib/"
 },
 {
+"code": "3224861",
+"name": "Dames thermobroek Rib",
+"desc": "Maten S - M",
+"brand": "",
+"cat": "Sport",
+"price": 4.49,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3224861_8718964295326-110_01_semvdw",
+"href": "https://www.action.com/nl-nl/p/3224861/dames-thermobroek-rib/"
+},
+{
 "code": "3224860",
 "name": "Dames thermolegging Rib",
 "desc": "Maten L - XL",
@@ -4884,18 +4884,6 @@
 "href": "https://www.action.com/nl-nl/p/3228721/sigg-rugtas/"
 },
 {
-"code": "3228429",
-"name": "Killerbody eiwitreep Lemon Cheesecake",
-"desc": "40 gram",
-"brand": "Killerbody",
-"cat": "Sport",
-"price": 0.79,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3228429_8719324787918-111_01_pae2m8",
-"href": "https://www.action.com/nl-nl/p/3228429/killerbody-eiwitreep-lemon-cheesecake/"
-},
-{
 "code": "3227536",
 "name": "XXL Nutrition whey proteïnepoeder Cookies & Cream",
 "desc": "17 porties | 510 gram",
@@ -4932,18 +4920,6 @@
 "href": "https://www.action.com/nl-nl/p/3226052/australian-joggingbroek/"
 },
 {
-"code": "3225637",
-"name": "Isoleerfles",
-"desc": "1,182 liter | diverse kleuren",
-"brand": "",
-"cat": "Sport",
-"price": 6.95,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3225637_196557033100-110_03_aboa5s",
-"href": "https://www.action.com/nl-nl/p/3225637/isoleerfles/"
-},
-{
 "code": "3225635",
 "name": "TAL isoleerbeker met rietje",
 "desc": "532 ml",
@@ -4978,5 +4954,17 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3225630_196557069857-110_01_mst07r",
 "href": "https://www.action.com/nl-nl/p/3225630/tal-isoleerfles-everett/"
+},
+{
+"code": "3225628",
+"name": "TAL isoleerfles Everett",
+"desc": "946 ml",
+"brand": "",
+"cat": "Sport",
+"price": 7.95,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3225628_196557195082-110_01_s4d7zr",
+"href": "https://www.action.com/nl-nl/p/3225628/tal-isoleerfles-everett/"
 }
 ]
