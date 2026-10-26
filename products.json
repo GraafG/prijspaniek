@@ -1020,18 +1020,6 @@
 "href": "https://www.action.com/nl-nl/p/3229099/amos-4d-gummy-dinosaur/"
 },
 {
-"code": "3228978",
-"name": "Halloween mega gummy",
-"desc": "280 gram | diverse varianten",
-"brand": "",
-"cat": "Snoep",
-"price": 0.99,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3228978_8713305819964-111_01_v32mmm",
-"href": "https://www.action.com/nl-nl/p/3228978/halloween-mega-gummy/"
-},
-{
 "code": "3228458",
 "name": "Venco Droptoppers Zacht & Zoet",
 "desc": "215 gram",
@@ -1138,6 +1126,18 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3228439_6936756269375-111_01_nh829h",
 "href": "https://www.action.com/nl-nl/p/3228439/amos-4d-gummy-dino-s/"
+},
+{
+"code": "3228438",
+"name": "Amos gummy Mermaid Jewels",
+"desc": "120 gram",
+"brand": "Amos",
+"cat": "Snoep",
+"price": 0.79,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3228438_6936756269474-111_01_w115ad",
+"href": "https://www.action.com/nl-nl/p/3228438/amos-gummy-mermaid-jewels/"
 },
 {
 "code": "3223910",
@@ -3356,7 +3356,7 @@
 "price": 1.77,
 "original": null,
 "isDeal": false,
-"image": "https://asset.action.com/image/upload/3225899_8721148005451-111_01_ckoi08",
+"image": "https://asset.action.com/image/upload/3225899_8721148005420-111_01_l7zzsj",
 "href": "https://www.action.com/nl-nl/p/3225899/coca-cola-kersthanger/"
 },
 {
@@ -4064,7 +4064,7 @@
 "price": 29.95,
 "original": null,
 "isDeal": false,
-"image": "https://asset.action.com/image/upload/3227195_8721335816341-110_01_c6usfg",
+"image": "https://asset.action.com/image/upload/3227195_8721335816341-110_01_yxiapr",
 "href": "https://www.action.com/nl-nl/p/3227195/masterchef-koekenpannenset-midnight/"
 },
 {
@@ -4513,14 +4513,14 @@
 },
 {
 "code": "3219672",
-"name": "Duracell Everyday Alkaline batterijen AAA",
+"name": "Duracell batterijen AAA",
 "desc": "24 stuks",
 "brand": "Duracell",
 "cat": "Multimedia",
 "price": 9.77,
 "original": 10.95,
 "isDeal": true,
-"image": "https://asset.action.com/image/upload/3219672_5000394181618-111_01_qvlmqu",
+"image": "https://asset.action.com/image/upload/3219672_5000394187276-111_01_zhah6u",
 "href": "https://www.action.com/nl-nl/p/3219672/duracell-everyday-alkaline-batterijen-aaa/"
 },
 {
