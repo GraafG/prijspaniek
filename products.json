@@ -624,6 +624,18 @@
 "href": "https://www.action.com/nl-nl/p/2521738/smikkelhuys-snoepkikkers-muizen/"
 },
 {
+"code": "3210121",
+"name": "M&M's Limited Edition Pinda",
+"desc": "250 gram",
+"brand": "M&M's",
+"cat": "Chocolade",
+"price": 3.49,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3210121_5900951316401-111_01_vyngh4",
+"href": "https://www.action.com/nl-nl/p/3210121/m-m-s-limited-edition-pinda/"
+},
+{
 "code": "2527391",
 "name": "Kinder Bueno",
 "desc": " 3-pack",
@@ -838,18 +850,6 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3226751_4008468036278-111_01_b9fbvp",
 "href": "https://www.action.com/nl-nl/p/3226751/chocolade-kerstlolly-s/"
-},
-{
-"code": "3226746",
-"name": "Oreo gevulde koektrommel",
-"desc": "66 gram",
-"brand": "Oreo",
-"cat": "Chocolade",
-"price": 2.88,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3226746_5404038667733-111_01_kkajqo",
-"href": "https://www.action.com/nl-nl/p/3226746/oreo-gevulde-koektrommel/"
 },
 {
 "code": "3224076",
@@ -3961,7 +3961,7 @@
 },
 {
 "code": "3226289",
-"name": "Tafelkleed",
+"name": "Damast tafelkleed",
 "desc": "140 x 240 cm | diverse varianten",
 "brand": "",
 "cat": "Keuken",
@@ -3969,7 +3969,7 @@
 "original": null,
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3226289_5412657324944-111_01_xbsuu7",
-"href": "https://www.action.com/nl-nl/p/3226289/tafelkleed/"
+"href": "https://www.action.com/nl-nl/p/3226289/damast-tafelkleed/"
 },
 {
 "code": "3225885",
@@ -4548,18 +4548,6 @@
 "href": "https://www.action.com/nl-nl/p/3222374/roseland-bluetooth-speaker/"
 },
 {
-"code": "3205982",
-"name": "Fresh ’n Rebel draadloze XL speaker",
-"desc": "24 watt | Ø 11,5 x 22 cm | diverse kleuren",
-"brand": "Fresh ’n Rebel",
-"cat": "Multimedia",
-"price": 19.95,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3205982_8720249814139-110_02_sujggj",
-"href": "https://www.action.com/nl-nl/p/3205982/fresh-n-rebel-draadloze-xl-speaker/"
-},
-{
 "code": "3204292",
 "name": "Re-load powerbank",
 "desc": "12 watt | 5.000 mAh | diverse kleuren",
@@ -4726,6 +4714,18 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3225146_4891199243486-111_01_lee1tv",
 "href": "https://www.action.com/nl-nl/p/3225146/gp-oplaadbare-batterijen-aaa/"
+},
+{
+"code": "3224689",
+"name": "A-Force batterijen AA",
+"desc": "12 stuks",
+"brand": "A-Force",
+"cat": "Multimedia",
+"price": 1.89,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3224689_8718964322534-111_01_vdhcif",
+"href": "https://www.action.com/nl-nl/p/3224689/a-force-batterijen-aa/"
 },
 {
 "code": "3003086",
