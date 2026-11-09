@@ -1932,18 +1932,6 @@
 "href": "https://www.action.com/nl-nl/p/3223192/jelly-perzik/"
 },
 {
-"code": "3220787",
-"name": "Dr. Pepper Vanilla Float",
-"desc": "330 ml",
-"brand": "Dr. Pepper",
-"cat": "Drinken",
-"price": 0.85,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3220787_8435185981646-111_01_tiyqg1",
-"href": "https://www.action.com/nl-nl/p/3220787/dr-pepper-vanilla-float/"
-},
-{
 "code": "3219804",
 "name": "Thee piramide",
 "desc": "Diverse varianten",
@@ -2002,6 +1990,18 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3218490_4902494090153-111_01_w8qod4",
 "href": "https://www.action.com/nl-nl/p/3218490/hatakosen-strawberry/"
+},
+{
+"code": "3217066",
+"name": "Chupa Chups slush",
+"desc": "250 ml | diverse varianten",
+"brand": "Chupa Chups",
+"cat": "Drinken",
+"price": 0.79,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3217066_5056192412089-111_01_j7sepw",
+"href": "https://www.action.com/nl-nl/p/3217066/chupa-chups-slush/"
 },
 {
 "code": "3224957",
@@ -4316,7 +4316,7 @@
 "price": 0.99,
 "original": null,
 "isDeal": false,
-"image": "https://asset.action.com/image/upload/3224255_5050835052946-111_01_wlqyzg",
+"image": "https://asset.action.com/image/upload/3224255_5050835804248-111_01_amtszd",
 "href": "https://www.action.com/nl-nl/p/3224255/pennentopper-verrassingsdoos/"
 },
 {
