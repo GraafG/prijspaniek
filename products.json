@@ -48,6 +48,18 @@
 "href": "https://www.action.com/nl-nl/p/2578747/tcx-papieren-verpakkingstape/"
 },
 {
+"code": "3228861",
+"name": "Verpakkingschips",
+"desc": "5 liter",
+"brand": "",
+"cat": "Kantoor",
+"price": 1.99,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3228861_8713815211760-110_01_datdfp",
+"href": "https://www.action.com/nl-nl/p/3228861/verpakkingschips/"
+},
+{
 "code": "3224344",
 "name": "Werckmann diamantschijven",
 "desc": "4-delig | Ø 125 mm",
@@ -118,18 +130,6 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3215200_8718964225484-110_01_blptyn",
 "href": "https://www.action.com/nl-nl/p/3215200/werckmann-gereedschapsset/"
-},
-{
-"code": "3210143",
-"name": "Werckmann krimptangset",
-"desc": "301-delig",
-"brand": "Werckmann",
-"cat": "Gereedschap",
-"price": 7.99,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3210143_8718964274505-110_01_skvfch",
-"href": "https://www.action.com/nl-nl/p/3210143/werckmann-krimptangset/"
 },
 {
 "code": "3015578",
@@ -3696,18 +3696,6 @@
 "href": "https://www.action.com/nl-nl/p/3228733/hondenkoekjes-vanille/"
 },
 {
-"code": "3215563",
-"name": "Pets Unlimited kattensoep",
-"desc": "135 ml | diverse varianten",
-"brand": "",
-"cat": "Huisdier",
-"price": 0.79,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3215563_8715342049649-111_01_ch7ydu",
-"href": "https://www.action.com/nl-nl/p/3215563/pets-unlimited-kattensoep/"
-},
-{
 "code": "3201983",
 "name": "Dierenborstel",
 "desc": "Diverse kleuren",
@@ -3922,6 +3910,18 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3225841_8716793911134-111_01_tzzalk",
 "href": "https://www.action.com/nl-nl/p/3225841/mr-goodlad-macarons-hondenkoekjes/"
+},
+{
+"code": "3225831",
+"name": "Mr. Goodlad Curlies",
+"desc": "150 gram",
+"brand": "",
+"cat": "Huisdier",
+"price": 1.79,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3225831_8716793911158-111_01_hcbe3i",
+"href": "https://www.action.com/nl-nl/p/3225831/mr-goodlad-curlies/"
 },
 {
 "code": "3227200",
@@ -4176,6 +4176,18 @@
 "href": "https://www.action.com/nl-nl/p/3221315/drinkfles/"
 },
 {
+"code": "3220473",
+"name": "La Sonata keukendoek Beige",
+"desc": "50 x 50 cm",
+"brand": "",
+"cat": "Keuken",
+"price": 1.59,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3220473_8719023689292-110_01_lqvajm",
+"href": "https://www.action.com/nl-nl/p/3220473/la-sonata-keukendoek-beige/"
+},
+{
 "code": "3220289",
 "name": "Snackbox met vakken",
 "desc": "Ø 28,5 cm | diverse varianten",
@@ -4198,18 +4210,6 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3218401_8719023752200-110_01_pltbet",
 "href": "https://www.action.com/nl-nl/p/3218401/theedoeken/"
-},
-{
-"code": "3217835",
-"name": "Theeset voor 1 persoon",
-"desc": "5-delig | diverse kleuren",
-"brand": "",
-"cat": "Keuken",
-"price": 6.95,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3217835_3560231051433-110_01_gl8hmg",
-"href": "https://www.action.com/nl-nl/p/3217835/theeset-voor-1-persoon/"
 },
 {
 "code": "3208840",
@@ -4318,18 +4318,6 @@
 "isDeal": false,
 "image": "https://asset.action.com/image/upload/3222814_8720687717412-110_01_cjhjdl",
 "href": "https://www.action.com/nl-nl/p/3222814/balpen-met-fluffy-pompon/"
-},
-{
-"code": "3217799",
-"name": "Office Essentials luchtkussen enveloppen",
-"desc": "5 stuks",
-"brand": "Office Essentials",
-"cat": "Kantoor",
-"price": 1.39,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3217799_8712417504904-110_01_iwtgbt",
-"href": "https://www.action.com/nl-nl/p/3217799/office-essentials-luchtkussen-enveloppen/"
 },
 {
 "code": "3217539",
@@ -4608,18 +4596,6 @@
 "href": "https://www.action.com/nl-nl/p/3215682/lab31-telefoonhoesje/"
 },
 {
-"code": "3211891",
-"name": "Varta knoopcelbatterijen CR2025",
-"desc": "5 stuks",
-"brand": "Varta",
-"cat": "Multimedia",
-"price": 1.99,
-"original": null,
-"isDeal": false,
-"image": "https://asset.action.com/image/upload/3211891_4008496230075-111_01_q6wsuh",
-"href": "https://www.action.com/nl-nl/p/3211891/varta-knoopcelbatterijen-cr2025/"
-},
-{
 "code": "3207816",
 "name": "Fresh ’n Rebel oordopjes",
 "desc": "Diverse kleuren",
@@ -4740,6 +4716,18 @@
 "href": "https://www.action.com/nl-nl/p/3225982/philips-batterijen-aaa/"
 },
 {
+"code": "3225981",
+"name": "Philips batterijen AA",
+"desc": "10 stuks",
+"brand": "Philips",
+"cat": "Multimedia",
+"price": 2.49,
+"original": null,
+"isDeal": false,
+"image": "https://asset.action.com/image/upload/3225981_4895229182639-111_01_bsprfw",
+"href": "https://www.action.com/nl-nl/p/3225981/philips-batterijen-aa/"
+},
+{
 "code": "3227085",
 "name": "Accelerate creatine kauwtabletten",
 "desc": "45 stuks | 135 gram",
@@ -4766,7 +4754,7 @@
 {
 "code": "3216898",
 "name": "Pilates ring",
-"desc": "Ø 35 cm | diverse kleuren",
+"desc": "Ø 37 cm | diverse kleuren",
 "brand": "",
 "cat": "Sport",
 "price": 3.99,
